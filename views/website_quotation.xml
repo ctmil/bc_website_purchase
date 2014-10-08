@@ -12,7 +12,7 @@
 
   <template id="pricing" name="Price">
       <section data-snippet-id="title">
-          <h1 class="page-header">XPricing</h1>
+          <h1 class="page-header">Pricing</h1>
       </section>
       <section id="quote">
           <table class="table">
@@ -22,7 +22,7 @@
                       <th>Quantity</th>
                       <th>Taxes</th>
                       <th></th>
-                      <th class="text-right">XXUnit Price</th>
+                      <th class="text-right">Unit Price</th>
                       <th class="text-right">Price</th>
                   </tr>
               </thead>
@@ -52,15 +52,15 @@
 
                               <!-- ./update_unitprice/#{ line.id }/?order_id=#{ quotation.id }&amp;token=#{ quotation.access_token } -->
                               <!-- js_update_line_json YEAH!1-  -->
-<div class="input-group pull-left mb32" style="width: 75%%">
-              <form id="price_unit" t-attf-action="./update_line/#{ line.id }/?order_id=#{ quotation.id }&amp;unlink=True&amp;token=#{ quotation.access_token }" class="update_line inputgroup" method="POST">
+<div class="input-group pull-left mb32" style="width: 100%">
+              <!-- <form id="price_unit" t-attf-action="./update_line/#{ line.id }/?order_id=#{ quotation.id }&amp;unlink=True&amp;token=#{ quotation.access_token }" class="update_line inputgroup" method="POST"> -->
                   <!-- <img class="img pull-left img-rounded" t-att-src="website.image_url(user_id.partner_id, 'image_small')" style="width: 50px; margin-right: 10px;"/> -->
 
-                      <input type="text" name="price_unit" class="js_unitprice input-group" placeholder="Price pr unit" t-att-value="line.price_unit" />
+                      <input type="text" name="price_unit" t-attf-data="./update_line/#{ line.id }/?order_id=#{ quotation.id }&amp;unlink=True&amp;token=#{ quotation.access_token }" class="update_line js_unitprice input-group" placeholder="Price pr unit" t-att-value="line.price_unit" />
                       <!-- <textarea rows="4" name="comment" class="form-control" placeholder="Send us a note..."></textarea>-->
-                      <button type="submit" class="btn btn-primary mt8">Update</button>
+                      <!-- button type="submit" class="btn btn-primary mt8">Update</button -->
 
-              </form>
+<!--              </form> -->
                               </div>
                       <!--        <div t-field="line.price_unit"
                                   t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}' /> FUNGERER -->
@@ -72,9 +72,10 @@
                               </div> TBRI -->
                           </strong>
                       </td>
-                      <td>
+                      <td t-att-data="line.id">
                           <div class="js_line_subtotal text-right output-group"
                               t-field="line.price_subtotal"
+                              t-att-data="line.id"
                               t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
                       <td>
@@ -87,14 +88,14 @@
                       <td></td><td></td><td></td><td></td>
                       <td class="text-right"><strong>Subtotal:</strong></td>
                       <td class="text-right">
-                          <strong data-id="total_amount" t-field="quotation.amount_untaxed" t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
+                          <strong data-id="sub_total_amount" t-field="quotation.amount_untaxed" t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
                   </tr>
                   <tr>
                       <td></td><td></td><td></td><td></td>
                       <td class="text-right">Taxes:</td>
                       <td class="text-right">
-                          <span data-id="total_amount" t-field="quotation.amount_tax" t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
+                          <span data-id="tax_amount" t-field="quotation.amount_tax" t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
                   </tr>
                   <tr>
@@ -184,7 +185,7 @@
   <template id="po_quotation" name="Product Quotation">
       <t t-call="website.layout">
         <body data-spy="scroll" data-target=".navspy" data-offset="50">
-            <div class="container o_website_quote">
+            <div class="container o_bc_website_purchase">
               <div class="row mt16">
                   <div class="col-md-3">
                       <div class="bs-sidebar">
@@ -199,7 +200,7 @@
                               <div class="mt8" t-if="order_valid">
                                   <a type="submit" href="#discussion">
                                       Ask Changes
-                                  </a> or 
+                                  </a> or
                                   <a data-toggle="modal" data-target="#modeldecline">
                                       Reject
                                   </a>
@@ -226,7 +227,7 @@
 
                               <div class="text-center mb16" t-if="quotation.amount_undiscounted &gt; quotation.amount_total">
                                   <p class="text-muted mb8">Your advantage:</p>
-                                  <strong t-field="quotation.amount_total" 
+                                  <strong t-field="quotation.amount_total"
                                         t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
                                   <strong t-field="quotation.amount_undiscounted"
                                         t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'
@@ -273,7 +274,7 @@
                               <p>
                                   I agree that by signing this proposal, I
                                   accept it on the behalf of <b t-field="quotation.company_id"/>,
-                                  for an amount of 
+                                  for an amount of
                                   <b data-id="total_amount" t-field="quotation.amount_total"
                                     t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
                                   with payment terms: <!-- b t-f i e ld="quot ation.paym ent_term"/-->.
@@ -377,12 +378,12 @@
                           <a t-att-id="line.id"/>
                           <div t-field="line.website_description"/>
                       </t>
-    
+
                       <div class="oe_structure"/>
 
                       <a id="pricing"/>
                       <t t-call="bc_website_purchase.pricing"/>
-                      
+
                       <a id="options"/>
                       <t t-call="bc_website_purchase.optional_products"/>
 
@@ -484,7 +485,7 @@
   <template id="so_template" name="SO Template">
     <t t-call="website.layout">
         <body data-spy="scroll" data-target=".navspy" data-offset="50">
-            <div class="container o_website_quote">
+            <div class="container o_bc_website_purchase_quote">
                 <div class="row mt16">
                     <div class="col-md-3">
                         <div class="bs-sidebar">

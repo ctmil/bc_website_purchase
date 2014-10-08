@@ -2,7 +2,7 @@
 'use strict';
 var website = openerp.website;
 
-website.if_dom_contains('div.o_website_quote', function () {
+website.if_dom_contains('div.o_bc_website_purchase', function () {
 
     $('a.js_update_line_json').on('click', function (ev) {
         ev.preventDefault();
@@ -36,9 +36,10 @@ website.if_dom_contains('div.o_website_quote', function () {
         //alert("Hei og hopp2");
         var $link = $(ev.currentTarget);
         //alert(ev.currentTarget);
-        var href = $link.attr("action");
+        var href = $link.attr("data");
         //alert('href');
         //alert(href);
+
         var order_id = href.match(/order_id=([0-9]+)/);
         //alert('order id');
         //alert(order_id);
@@ -47,8 +48,8 @@ website.if_dom_contains('div.o_website_quote', function () {
           //  alert("Hei og hopp3");
         var new_price_elem = $link.parents('.input-group:first').find('.js_unitprice');
         var new_price = new_price_elem[0].value;
-        alert('new price');
-        alert(new_price);
+        //alert('new price');
+        //alert(new_price);
 
 
         openerp.jsonRpc("/purchase/update_unitprice", 'call', {
@@ -60,17 +61,39 @@ website.if_dom_contains('div.o_website_quote', function () {
                 'unlink': $link.is('[href*="unlink"]') */
                 })
                 .then(function (data) {
-                alert('data');
-                alert(data);
+                //alert('data');
+                //alert(data);
                     if(!data){
                         location.reload();
                     }
                     $link.parents('.input-group:first').find('.js_unitprice').val(data[0]);
-                    alert($link.parents('.output-group:first')[0]);
-                    $link.parents.parents('.output-group:first').find('.js_line_subtotal').val(data[1]);
-                    $('[data-id="total_amount"]>span').html(data[2]);
+                    //alert($('.js_line_subtotal>span'))
+                    //alert('lets');
+                    $('*').find('.js_line_subtotal').each(function() {
+                        //alert('this');
+                        //alert($(this));
+                        var line_here = parseInt($( this).attr('data'));
+                        //alert( 'here');
+                        //alert( line_here );
+                        //alert( parseInt(line_id[1]) );
+                        //alert( line_here == parseInt(line_id[1]));
+                        if (line_here == parseInt(line_id[1])) {
+                            //$( this )('span').html(data[1]);
+                            //alert($(this).children('span'));
+                            $(this).children('span').html(data[1]);
+                            //alert('DID IT');
+                        }
+                    })
+
+                    //alert($(ev.target).closest('.js_line_subtotal')('span').value);
+                    //$( ev.target ).closest('.js_line_subtotal')('span').html(data[1]);
+                    //$link.closest(".js_line_subtotal").val(data[1]);
+                    //$('.js_line_subtotal>span').html(data[1]);
+                    $('[data-id="sub_total_amount"]>span').html(data[2]);
+                    $('[data-id="tax_amount"]>span').html(data[3]);
+                    $('[data-id="total_amount"]>span').html(data[4]);
                 });
-        alert( "Handler for .change() called." );
+        //alert( "Handler for .change() called." );
         return false;
     });
 

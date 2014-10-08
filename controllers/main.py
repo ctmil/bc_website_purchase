@@ -60,13 +60,14 @@ class purchase_quote(http.Controller):
 
     @http.route(['/purchase/accept'], type='json', auth="public", website=True)
     def accept(self, order_id, token=None, signer=None, sign=None, **post):
+        print "ACCEPT!-------------------------------------"
         order_obj = request.registry.get('purchase.order')
         order = order_obj.browse(request.cr, SUPERUSER_ID, order_id)
         if token != order.access_token:
             return request.website.render('website.404')
         attachments=sign and [('signature.png', sign.decode('base64'))] or []
-        order_obj.signal_workflow(request.cr, SUPERUSER_ID, [order_id], 'order_confirm', context=request.context)
-        message = _('Order signed by %s') % (signer,)
+        order_obj.signal_workflow(request.cr, SUPERUSER_ID, [order_id], 'bid_received', context=request.context)
+        message = _('RFQ signed by %s') % (signer,)
         self.__message_post(message, order_id, type='comment', subtype='mt_comment', attachments=attachments)
         return True
 
@@ -147,9 +148,9 @@ class purchase_quote(http.Controller):
         #quantity = order_line_val['product_qty'] + number
         order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], {'price_unit': (unit_price)}, context=request.context)
         order_line_val = order_line_obj.read(request.cr, SUPERUSER_ID, [line_id], ['price_subtotal'], context=request.context)[0]
-        return [str(unit_price), str(order_line_val['price_subtotal']), str(order.amount_total)]
+        return [str(unit_price), str(order_line_val['price_subtotal']), str(order.amount_untaxed), str(order.amount_tax), str(order.amount_total)]
 
-    @http.route(["/purchase/template/<model('sale.quote.template'):quote>"], type='http', auth="user", website=True)
+    @http.route(["/purchase/template/<model('purchase.quote.template'):quote>"], type='http', auth="user", website=True)
     def template_view(self, quote, **post):
         values = { 'template': quote }
         return request.website.render('bc_website_purchase.po_template', values)
