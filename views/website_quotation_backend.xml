@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="purchase_order_form_quote">
+            <field name="name">purchase.order.form.payment</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[@name='print_quotation']" position="after">
+                    <button name="open_quotation" string="View Quotation" type="object"
+                        attrs="{'invisible': [('template_id','=',False)]}"/>
+                </xpath>
+                <xpath expr="//page[@string='Products']" position="after">
+                    <page string="Suggested Products">
+                        <label string="Optional Products &amp; Services" for="options"/>
+                        <field name="options">
+                            <tree string="purchases Quote Template Lines" editable="bottom">
+                                    <field name="product_id" on_change="on_change_product_id(product_id)"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+<!--                                    <field name="uom_id" groups="product.group_uom"/> -->
+<!--                                    <field name="price_unit"/> -->
+                                    <!-- <field name="discount" groups="purchase.group_discount_per_so_line"/> -->
+                                    <field name="website_description" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='partner_ref']" position="after">
+                    <field name="template_id" on_change="onchange_template_id(template_id, partner_id, fiscal_position)"/>
+                    <field name="validity_date"/>
+                    <field name="website_description" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_purchase_quote_template_form">
+            <field name="name">purchase.quote.template.form</field>
+            <field name="model">purchase.quote.template</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="purchase Quotation Template">
+                    <sheet>
+                        <button string="Edit Template" type="object" name="open_template" class="oe_link oe_right"/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                               <label for="number_of_days"/>
+                               <div id="number_of_days">
+                                   <field name="number_of_days" class="oe_inline"/> days
+                               </div>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Lines">
+                            <field name="quote_line">
+                                <form string="purchases Quote Template Lines">
+                                    <group>
+                                        <group>
+                                            <field name="product_id" on_change="on_change_product_id(product_id)"/>
+                                            <label for="product_qty"/>
+                                            <div>
+                                                <field
+                                                    name="product_qty" class="oe_inline"/>
+                                            </div>
+                                      <!--      <field name="price_unit"/> -->
+<!--                                            <label for="discount" groups="purchase.group_discount_per_so_line"/> -->
+<!--                                            <div groups="purchase.group_discount_per_so_line">
+                                                <field name="discount" class="oe_inline"/> %%
+                                            </div> -->
+                                        </group>
+                                    </group>
+                                    <notebook colspan="4">
+                                        <page string="Description">
+                                            <field name="name" />
+                                        </page>
+                                        <page string="Website Description">
+                                            <field name="website_description" />
+                                        </page>
+                                    </notebook>
+                                </form>
+                                <tree string="purchases Quote Template Lines" editable="bottom">
+                                    <field name="product_id" on_change="on_change_product_id(product_id)"/>
+                                    <field name="name"/>
+                                    <field name="product_qty"/>
+<!--                                    <field name="product_uom_id" groups="product.group_uom"/> -->
+<!--                                    <field name="discount" groups="purchase.group_discount_per_so_line"/> -->
+<!--                                    <field name="price_unit"/> -->
+                                    <field name="website_description" invisible="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Suggested Products">
+                            <field name="options">
+                              <tree string="purchases Quote Template Lines" editable="bottom">
+                                <field name="product_id" on_change="on_change_product_id(product_id)"/>
+                                <field name="name"/>
+                                <field name="quantity"/>
+<!--                                <field name="uom_id" groups="product.group_uom"/> -->
+<!--                                <field name="price_unit"/> -->
+<!--                                <field name="discount" groups="purchase.group_discount_per_so_line"/> -->
+                                <field name="website_description" invisible="1"/>
+                              </tree>
+                            </field>
+                        </page>
+                        </notebook>
+                        <field name="website_description" invisible="1"/>
+                        <field name="note" placeholder="Terms and conditions..."  nolabel="1"/>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_purchase_quote_template_tree">
+            <field name="name">purchase.quote.template.tree</field>
+            <field name="model">purchase.quote.template</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="purchase Quote Template">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_purchase_quotation_template" model="ir.actions.act_window">
+            <field name="name">Quotation Templates</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.quote.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_purchase_quotation_template" id="menu_purchase_quote_template" parent="base.menu_base_config" sequence="6" groups="purchase.group_purchase_user,purchase.group_purchase_manager"/>
+    </data>
+</openerp>
