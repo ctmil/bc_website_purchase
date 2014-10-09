@@ -20,6 +20,7 @@
 ##############################################################################
 
 from openerp.osv import osv, fields
+from urllib import urlencode
 import uuid
 import time
 import datetime
@@ -143,11 +144,40 @@ class purchase_order(osv.osv):
         'options' : fields.one2many('purchase.order.option', 'order_id', 'Optional Products Lines'),
         'validity_date': fields.date('Expiry Date'),
         'amount_undiscounted': fields.function(_get_total, string='Amount Before Discount', type="float",
-            digits_compute=dp.get_precision('Account'))
+            digits_compute=dp.get_precision('Account')),
+        'user_id': fields.many2one('res.users', 'Salesperson', states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, select=True, track_visibility='onchange'),
     }
     _defaults = {
         'access_token': lambda self, cr, uid, ctx={}: str(uuid.uuid4())
     }
+
+
+    def get_signup_url(self, cr, uid, ids, context=None):
+        assert len(ids) == 1
+        document = self.browse(cr, uid, ids[0], context=context)
+        contex_signup = dict(context, signup_valid=True)
+        return self.pool['res.partner']._get_signup_url_for_action(
+            cr, uid, [document.partner_id.id], action='mail.action_mail_redirect',
+            model=self._name, res_id=document.id, context=contex_signup,
+        )[document.partner_id.id]
+
+    def get_access_url(self, cr, uid, ids, context=None):
+        object = self.pool['purchase.order'].browse(cr, uid, ids, context)
+        print "ACCESS TOKEN", object
+
+        #def _get_access_link(self, cr, uid, mail, partner, context=None):
+        # the parameters to encode for the query and fragment part of url
+        query = {'db': cr.dbname}
+        fragment = {
+            'login': 1, #partner.user_ids[0].login,
+            'action': 'mail.action_mail_redirect',
+        }
+        #if mail.notification:
+        #    fragment['message_id'] = mail.mail_message_id.id
+        #elif mail.model and mail.res_id:
+        #    fragment.update(model=mail.model, res_id=mail.res_id)
+        assert len(ids) == 1
+        return "/purchase/%d/%s/?%s#%s" % (ids[0], object.access_token, urlencode(query), urlencode(fragment))
 
     def open_quotation(self, cr, uid, quote_id, context=None):
         quote = self.browse(cr, uid, quote_id[0], context=context)
