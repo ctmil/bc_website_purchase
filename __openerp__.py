@@ -10,11 +10,11 @@ GURBA
 
         """,
     'author': 'OpenERP SA',
-    'depends': ['website','sale', 'mail', 'website_quote', 'purchase'],
+    'depends': ['website', 'mail', 'purchase'],
     'data': [
         'views/website_quotation.xml',
         'views/website_quotation_backend.xml',
-        'views/report_saleorder.xml',
+        #'views/report_saleorder.xml',
         'data/website_quotation_data.xml',
         'security/ir.model.access.csv',
     ],
