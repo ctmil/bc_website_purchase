@@ -171,13 +171,13 @@
   <template id="quotation_toolbar">
       <div class="text-center hidden-print" t-if="quotation.state in ('draft', 'sent', 'waiting_date')">
           <a class="btn btn-success fa fa-check" data-toggle="modal" data-target="#modelaccept">
-              Accept
+              Submit
           </a>
           <a class="btn btn-info fa fa-comment" type="submit" href="#discussion">
               Feedback
           </a>
           <a class="btn btn-danger fa fa-times" data-toggle="modal" data-target="#modeldecline">
-              Reject
+              Cancel
           </a>
       </div>
   </template>
@@ -254,8 +254,8 @@
                       </div>
                       <a id="introduction"/>
                       <h1 class="page-header mt16">
-                          <span t-if="quotation.state in ('draft','sent','cancel')">Your Quotation</span>
-                          <span t-if="quotation.state not in ('draft','sent','cancel')">Your Order</span>
+                          <span t-if="quotation.state in ('draft','sent','cancel')">Quotation</span>
+                          <span t-if="quotation.state not in ('draft','sent','cancel')">Order</span>
                           <em t-esc="quotation.name"/>
                           <small t-field="quotation.state"/>
                           <div groups="base.group_website_publisher" t-ignore="true" class="pull-right css_editable_mode_hidden">
@@ -321,7 +321,7 @@
                       <div class="row mt32">
                           <div class="col-md-6">
                               <div class="row">
-                                  <label class="col-sm-4 text-right">Customer:</label>
+                                  <label class="col-sm-4 text-right">Supplier:</label>
                                   <div class="col-sm-8">
                                       <div t-field="quotation.partner_id"/>
                                   </div>

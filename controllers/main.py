@@ -36,7 +36,8 @@ class purchase_quote(http.Controller):
     def view(self, order_id, token=None, message=False, **post):
         # use SUPERUSER_ID allow to access/view order for public user
         # only if he knows the private token
-        order = request.registry.get('purchase.order').browse(request.cr, token and SUPERUSER_ID or request.uid, order_id)
+        order_obj = request.registry.get('purchase.order')
+        order = order_obj.browse(request.cr, token and SUPERUSER_ID or request.uid, order_id)
         now = time.strftime('%Y-%m-%d')
         if token:
             if token != order.access_token:
@@ -46,6 +47,10 @@ class purchase_quote(http.Controller):
                 request.session['view_quote'] = now
                 body=_('Quotation viewed by customer')
                 self.__message_post(body, order_id, type='comment')
+
+        # If the supplier is viewing this, he has received it. If he has received it it must be sent
+        order_obj.signal_workflow(request.cr, SUPERUSER_ID, [order_id], 'send_rfq', context=request.context)
+
         days = 0
         if order.validity_date:
             days = (datetime.datetime.strptime(order.validity_date, '%Y-%m-%d') - datetime.datetime.now()).days + 1
