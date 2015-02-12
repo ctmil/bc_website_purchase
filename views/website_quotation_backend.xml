@@ -37,6 +37,21 @@
             </field>
         </record>
 
+       <record model="ir.ui.view" id="view_purchase_requisition_form_selectsupp">
+            <field name="name">purchase.requisition.form.inherit</field>
+            <field name="model">purchase.requisition</field>
+            <field name="inherit_id" ref="purchase_requisition.view_purchase_requisition_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Products']/div/button" position="before">
+                    <button name="%(action_purchase_requisition_suppliers)d" type="action"
+                                string="Request multiple quotations" icon="gtk-execute"
+                                attrs="{'invisible': ['|', ('line_ids','=',[]),('state', 'in', ('draft' ,'open','done'))]}"/>
+                </xpath>
+        </field>
+        </record>
+
+
+
         <record model="ir.ui.view" id="view_purchase_quote_template_form">
             <field name="name">purchase.quote.template.form</field>
             <field name="model">purchase.quote.template</field>

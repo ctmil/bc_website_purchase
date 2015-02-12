@@ -10,8 +10,9 @@ GURBA
 
         """,
     'author': 'OpenERP SA',
-    'depends': ['website', 'mail', 'purchase'],
+    'depends': ['website', 'mail', 'purchase', 'purchase_requisition'],
     'data': [
+        'wizards/request_relevant_suppliers.xml',
         'views/website_quotation.xml',
         'views/website_quotation_backend.xml',
         #'views/report_saleorder.xml',
