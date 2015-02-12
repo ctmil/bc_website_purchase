@@ -1,2 +1,3 @@
 __author__ = 'tbri'
-import order
+import original_order # V7 syntax
+import order # V8

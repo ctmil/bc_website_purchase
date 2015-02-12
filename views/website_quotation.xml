@@ -20,7 +20,7 @@
                   <tr>
                       <th>Products</th>
                       <th>Quantity</th>
-                      <th>Taxes</th>
+                      <th>Lead time</th>
                       <th></th>
                       <th class="text-right">Unit Price</th>
                       <th class="text-right">Price</th>
@@ -37,7 +37,10 @@
                               <span t-field="line.product_uom"/>
                           </div>
                       </td>
-                      <td><!-- TBRI
+                      <td><div id="quote_leadtime">
+                          <span t-field="line.leadtime" />
+                              </div>
+                          <!-- TBRI
                           <div t-foreach="line.tax_id" t-as="tax">
                               <t t-esc="tax.name"/>
                           </div> -->
