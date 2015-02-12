@@ -1,6 +1,6 @@
 <openerp>
     <data>
-
+<!-- https://www.odoo.com/forum/help-1/question/cant-set-default-email-template-in-sales-order-not-even-as-a-default-parameter-61064 -->
         <record id="email_template_website_purchase" model="email.template">
             <field name="name">WebRFQ - Send by Email</field>
             <field name="email_from">${(object.validator.email or '')|safe}</field>
