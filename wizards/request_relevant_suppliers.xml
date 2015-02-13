@@ -3,12 +3,16 @@
 
         <record id="view_purchase_requisition_suppliers" model="ir.ui.view">
             <field name="name">Choose Relevant Suppliers</field>
-            <field name="model">bc_website_purchase.requisition.suppliers</field>
+            <field name="model">requisition_suppliers</field>
             <field name="arch" type="xml">
                 <form string="Choose From Suppliers">
                     <group colspan="1">
+                        <field name="numsupp" />
                         <field name="product_suppliers">
-                            <field name="partner_id" context="{'default_supplier': 1, 'default_customer': 0}"/>
+                            <tree>
+                            <field name="name" context="{'default_supplier': 1, 'default_customer': 0}"/>
+                                <field name="leadtime" />
+                            </tree>
                         </field>
                     </group>
                     <footer>
@@ -19,11 +23,20 @@
                 </form>
             </field>
         </record>
+          <!--
+          <record id="view_relevant_supplierinfo" model="ir.ui.view">
+              <field name="name">Supplier info</field>
+              <field name="model">relevant_supplierinfo</field>
+              <field name="arch" type="xml">
+                  <tree string="Supplier"
 
+              </field>
+          </record>
+-->
         <record id="action_purchase_requisition_suppliers" model="ir.actions.act_window">
                <field name="name">Choose Relevant Suppliers</field>
                <field name="type">ir.actions.act_window</field>
-               <field name="res_model">bc_website_purchase.requisition.suppliers</field>
+               <field name="res_model">requisition_suppliers</field>
                <field name="view_type">form</field>
                <field name="view_mode">form</field>
                <field name="context">{'record_id' : active_id}</field>
