@@ -52,6 +52,9 @@
                                 attrs="{'invisible': ['|', ('line_ids','=',[]),('state', 'in', ('draft' ,'open','done'))]}"/>
                                 -->
                 </xpath>
+                <field name="multiple_rfq_per_supplier" position="after">
+                    <field name="template_id"/>
+                </field>
         </field>
         </record>
 

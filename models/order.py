@@ -9,6 +9,8 @@ class purchase_order_line(models.Model):
 class purchase_requisition(models.Model):
     _inherit = 'purchase.requisition'
 
+    template_id = fields.Many2one('purchase.quote.template', 'Quote template', required=True)
+
     @api.one
     def action_purchase_requisition_suppliers(self):
         vals = {}

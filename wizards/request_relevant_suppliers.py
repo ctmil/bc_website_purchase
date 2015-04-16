@@ -137,6 +137,7 @@ class request_relevant_suppliers(models.TransientModel):
         _logger.info('create_order active_id %s' % active_id)
         tender = self.env['purchase.requisition'].browse(active_id)
 
+
         prods = self.env['relevant_supplierinfo'].search([('relevant_suppliers','=',self.id)])
 
 
@@ -154,6 +155,9 @@ class request_relevant_suppliers(models.TransientModel):
             _logger.info('create_order rfq %s', rfq_id)
             for rfq in rfq_id.values():
                 _logger.info('searching')
+                # not great but
+                po = self.env['purchase.order'].search([('id', '=', rfq)])
+                po.write({'template_id': tender.template_id.id})
                 lines = self.env['purchase.order.line'].search([('order_id','=',rfq)])
                 _logger.info('Lines found %s', lines)
                 lines.write({'leadtime' : leadtime})
