@@ -155,6 +155,25 @@ class purchase_quote(http.Controller):
         order_line_val = order_line_obj.read(request.cr, SUPERUSER_ID, [line_id], ['price_subtotal'], context=request.context)[0]
         return [str(unit_price), str(order_line_val['price_subtotal']), str(order.amount_untaxed), str(order.amount_tax), str(order.amount_total)]
 
+    @http.route(['/purchase/update_leadtime'], type='json', auth="public", website=True)
+    def update(self, line_id, order_id=None, token=None, new_leadtime=None, **post):
+        order = request.registry.get('purchase.order').browse(request.cr, SUPERUSER_ID, int(order_id))
+        if token != order.access_token:
+            return request.website.render('website.404')
+        if order.state not in ('draft','sent'):
+            return False
+        line_id=int(line_id)
+        print "NEW PRICE", new_leadtime
+        #new_price = post.get('price_unit')
+
+        unit_leadtime = float(new_leadtime)
+        order_line_obj = request.registry.get('purchase.order.line')
+
+        #quantity = order_line_val['product_qty'] + number
+        order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], {'leadtime': (unit_leadtime)}, context=request.context)
+        order_line_val = order_line_obj.read(request.cr, SUPERUSER_ID, [line_id], ['price_subtotal'], context=request.context)[0]
+        return [str(unit_leadtime), str(order_line_val['price_subtotal']), str(order.amount_untaxed), str(order.amount_tax), str(order.amount_total)]
+
     @http.route(["/purchase/template/<model('purchase.quote.template'):quote>"], type='http', auth="user", website=True)
     def template_view(self, quote, **post):
         values = { 'template': quote }

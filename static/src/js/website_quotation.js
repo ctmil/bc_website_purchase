@@ -48,8 +48,24 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
           //  alert("Hei og hopp3");
         var new_price_elem = $link.parents('.input-group:first').find('.js_unitprice');
         var new_price = new_price_elem[0].value;
+        var new_leadtime_elem = $link.parents('.input-group:first').find('.js_leadtime');
+        var new_leadtime = new_leadtime_elem[0].value;
         //alert('new price');
         //alert(new_price);
+
+        openerp.jsonRpc("/purchase/update_leadtime", 'call', {
+                'line_id': line_id[1],
+                'order_id': parseInt(order_id[1]),
+                'token': token[1],
+                'new_leadtime': new_leadtime
+        })
+                .then(function (data) {
+                if(!data){
+                    location.reload();
+                    }
+                $link.parents('.input-group:first').find('.js_leadtime').val(data[0]);
+
+                }
 
 
         openerp.jsonRpc("/purchase/update_unitprice", 'call', {

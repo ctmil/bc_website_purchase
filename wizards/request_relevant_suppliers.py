@@ -92,7 +92,8 @@ class request_relevant_suppliers(models.TransientModel):
                         #'relevant_suppliers' : self.id
                          }
                 _logger.info('About to create %s', info)
-                sellers.append(info)
+                if info not in sellers:
+                    sellers.append(info)
 
 
         #sellers = [{'supplier': 1290, 'leadtime': 12}, {'supplier': 579, 'leadtime': 27}]

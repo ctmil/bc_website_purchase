@@ -37,9 +37,16 @@
                               <span t-field="line.product_uom"/>
                           </div>
                       </td>
-                      <td><div id="quote_leadtime">
+                      <td>
+                          <!-- AGR changed from static leadtime to var user input leadtime
+                          <div id="quote_leadtime">
                           <span t-field="line.leadtime" />
+                              </div> -->
+                          <strong class="text-right">
+                              <div class="input-group pull-left mb32" style="width:100%">
+                                  <input type="text" name="leadtime" t-attf-data="./update_line/#{line.id}/?order_id=#{quotation_id}&amp;unlink=True&amp;token=#{quotation.access_token}" class="update_line js_leadtime input-group" placeholder="Leadtime" t-att-value="line.leadtime"/>
                               </div>
+                          </strong>
                           <!-- TBRI
                           <div t-foreach="line.tax_id" t-as="tax">
                               <t t-esc="tax.name"/>
