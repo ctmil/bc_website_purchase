@@ -53,6 +53,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
         //alert('new price');
         //alert(new_price);
 
+        // AGR added update lead time
         openerp.jsonRpc("/purchase/update_leadtime", 'call', {
                 'line_id': line_id[1],
                 'order_id': parseInt(order_id[1]),

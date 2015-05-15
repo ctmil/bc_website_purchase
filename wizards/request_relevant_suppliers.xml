@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Choose From Suppliers">
                     <group colspan="1">
-                        <field name="numsupp" />
+                        <field name="numsupp" invisible="1"/>
                         <field name="product_suppliers">
                             <tree>
                             <field name="name" context="{'default_supplier': 1, 'default_customer': 0}"/>

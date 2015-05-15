@@ -38,7 +38,7 @@
                           </div>
                       </td>
                       <td>
-                          <!-- AGR changed from static leadtime to var user input leadtime
+                          <!-- AGR changed from static leadtime to var user input leadtime, hope it works
                           <div id="quote_leadtime">
                           <span t-field="line.leadtime" />
                               </div> -->

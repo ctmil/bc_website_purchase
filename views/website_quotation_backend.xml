@@ -160,5 +160,6 @@
         </record>
 
         <menuitem action="action_purchase_quotation_template" id="menu_purchase_quote_template" parent="base.menu_base_config" sequence="6" groups="purchase.group_purchase_user,purchase.group_purchase_manager"/>
+
     </data>
 </openerp>

@@ -135,7 +135,6 @@ class purchase_quote(http.Controller):
         order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], {'product_qty': (quantity)}, context=request.context)
         return [str(quantity), str(order.amount_total)]
 
-
     @http.route(['/purchase/update_unitprice'], type='json', auth="public", website=True)
     def update(self, line_id, order_id=None, token=None, new_price=None, **post):
         order = request.registry.get('purchase.order').browse(request.cr, SUPERUSER_ID, int(order_id))

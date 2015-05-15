@@ -92,6 +92,7 @@ class request_relevant_suppliers(models.TransientModel):
                         #'relevant_suppliers' : self.id
                          }
                 _logger.info('About to create %s', info)
+                # do not add existing sellers
                 if info not in sellers:
                     sellers.append(info)
 
