@@ -1,16 +1,13 @@
 {
-    'name': 'Online Proposals',
+    'name': 'Purchase Quotation Online Proposals',
     'category': 'Website',
-    'summary': 'Send Professional Quotations',
-    'website': 'https://www.odoo.com/page/quote-builder',
     'version': '1.1',
     'description': """
 GURBA
 =========================
 
         """,
-    'author': 'OpenERP SA',
-    'depends': ['website', 'mail', 'purchase', 'purchase_requisition'],
+    'depends': ['website', 'mail', 'purchase', 'purchase_requisition','product'],
     'data': [
         'wizards/request_relevant_suppliers.xml',
         'views/website_quotation.xml',
@@ -20,7 +17,7 @@ GURBA
         'security/ir.model.access.csv',
     ],
     'demo': [
-        'data/website_quotation_demo.xml'
+        # 'data/website_quotation_demo.xml'
     ],
     'qweb': ['static/src/xml/*.xml'],
     'installable': True,

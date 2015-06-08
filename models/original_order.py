@@ -195,9 +195,9 @@ class purchase_order(osv.osv):
         if context is None:
             context = {}
         context = dict(context, lang=self.pool.get('res.partner').browse(cr, uid, partner, context).lang)
-        
-        lines = [(5,)]
+       
         quote_template = self.pool.get('purchase.quote.template').browse(cr, uid, template_id, context=context)
+        lines = [(5,)]
         for line in quote_template.quote_line:
             res = self.pool.get('purchase.order.line').product_id_change(cr, uid, False,
                 False, line.product_id.id, line.product_qty, line.product_uom_id.id, line.product_qty,
@@ -228,10 +228,11 @@ class purchase_order(osv.osv):
                 'discount': option.discount,
                 'website_description': option.website_description,
             }))
+	
         date = False
         if quote_template.number_of_days > 0:
             date = (datetime.datetime.now() + datetime.timedelta(quote_template.number_of_days)).strftime("%Y-%m-%d")
-        data = {'order_line': lines, 'website_description': quote_template.website_description, 'note': quote_template.note, 'options': options, 'validity_date': date}
+        data = {'website_description': quote_template.website_description, 'note': quote_template.note, 'validity_date': date}
         return {'value': data}
 
     def recommended_products(self, cr, uid, ids, context=None):

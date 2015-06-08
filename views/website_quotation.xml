@@ -5,8 +5,6 @@
   <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Quote frontend assets">
     <xpath expr="." position="inside">
       <script type="text/javascript" src="/bc_website_purchase/static/src/js/website_quotation.js"></script>
-      <script type="text/javascript" src="/bc_website_purchase/static/lib/jSignature/jSignature.min.js"></script>
-      <link rel='stylesheet' href='/bc_website_purchase/static/src/css/website_quotation.css'/>
     </xpath>
   </template>
 
@@ -18,69 +16,44 @@
           <table class="table">
               <thead>
                   <tr>
+                      <th class="columnID">ID</th>
                       <th>Products</th>
                       <th>Quantity</th>
                       <th>Lead time</th>
                       <th></th>
                       <th class="text-right">Unit Price</th>
                       <th class="text-right">Price</th>
+		      <th></th>
                   </tr>
               </thead>
               <tbody>
                   <tr t-foreach="quotation.order_line" t-as="line">
+                      <td class="columnID">
+                          <span t-field="line.id" />
+                      </td>
                       <td>
-                          <div t-field="line.name"/>
+                          <a t-field="line.name" t-attf-href="http://{{ line.product_id.product_tmpl_id.ntty_url }}" target="_blank"/>
                       </td>
                       <td>
                           <div id="quote_qty">
-                              <span t-field="line.product_qty"/>
+                              <span class="js_product_qty" t-field="line.product_qty"/>
                               <span t-field="line.product_uom"/>
                           </div>
                       </td>
                       <td>
-                          <!-- AGR changed from static leadtime to var user input leadtime, hope it works
-                          <div id="quote_leadtime">
-                          <span t-field="line.leadtime" />
-                              </div> -->
-                          <strong class="text-right">
-                              <div class="input-group pull-left mb32" style="width:100%">
-                                  <input type="text" name="leadtime" t-attf-data="./update_line/#{line.id}/?order_id=#{quotation_id}&amp;unlink=True&amp;token=#{quotation.access_token}" class="update_line js_leadtime input-group" placeholder="Leadtime" t-att-value="line.leadtime"/>
+                              <div class="input-group mb32" style="width:100%">
+                                  <input type="text" name="leadtime" class="update_line js_leadtime input-group" 
+					t-att-value="line.leadtime"/>
                               </div>
-                          </strong>
-                          <!-- TBRI
-                          <div t-foreach="line.tax_id" t-as="tax">
-                              <t t-esc="tax.name"/>
-                          </div> -->
                       </td>
-                      <td><!-- TBRI
-                          <strong t-if="line.discount" class="text-info">
-                              <t t-esc="((line.discount % 1) and '%s' or '%d') % line.discount"/>% discount
-                          </strong> -->DISC
-                      </td>
+		      <td />
                       <td>
-                          <strong class="text-right">
-
-                              <!-- ./update_unitprice/#{ line.id }/?order_id=#{ quotation.id }&amp;token=#{ quotation.access_token } -->
-                              <!-- js_update_line_json YEAH!1-  -->
-<div class="input-group pull-left mb32" style="width: 100%">
-              <!-- <form id="price_unit" t-attf-action="./update_line/#{ line.id }/?order_id=#{ quotation.id }&amp;unlink=True&amp;token=#{ quotation.access_token }" class="update_line inputgroup" method="POST"> -->
-                  <!-- <img class="img pull-left img-rounded" t-att-src="website.image_url(user_id.partner_id, 'image_small')" style="width: 50px; margin-right: 10px;"/> -->
-
-                      <input type="text" name="price_unit" t-attf-data="./update_line/#{ line.id }/?order_id=#{ quotation.id }&amp;unlink=True&amp;token=#{ quotation.access_token }" class="update_line js_unitprice input-group" placeholder="Price pr unit" t-att-value="line.price_unit" />
-                      <!-- <textarea rows="4" name="comment" class="form-control" placeholder="Send us a note..."></textarea>-->
-                      <!-- button type="submit" class="btn btn-primary mt8">Update</button -->
-
-<!--              </form> -->
+			      <div class="input-group mb32" style="width: 100%">
+                      		<input type="text" name="price_unit" class="update_line js_unitprice input-group"  
+					t-att-value="line.price_unit" 
+					t-field-options='{"widget": "monetary",
+					"display_currency": "line.order_id.partner_id.property_product_pricelist.currency_id"}'/>
                               </div>
-                      <!--        <div t-field="line.price_unit"
-                                  t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}' /> FUNGERER -->
-                                  <!-- TBRI t-att-style="line.discount and 'text-decoration: line-through' or ''"
-                                  t-att-class="line.discount and 'text-danger' or ''"/> -->
-                              <!-- TODO: apply monetary widget formating -->
-                              <!-- <div t-if="line.discount">
-                                  <t t-esc="'%.2f' % ((1-line.discount / 100.0) * line.price_unit)"/>
-                              </div> TBRI -->
-                          </strong>
                       </td>
                       <td t-att-data="line.id">
                           <div class="js_line_subtotal text-right output-group"
@@ -89,40 +62,26 @@
                               t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
                       <td>
-                          <a t-attf-href="./update_line/#{ line.id }/?order_id=#{ quotation.id }&amp;unlink=True&amp;token=#{ quotation.access_token }" class="mb8 js_update_line_json pull-right hidden-print" t-if="line.option_line_id">
+			<div id="delete_button">
+                          <!--a t-attf-href="./update_line/#{ line.id }/?order_id=#{ quotation.id }&amp;unlink=True&amp;token=#{ quotation.access_token }" class="mb8 js_update_line_json pull-right hidden-print" t-if="line.option_line_id" -->
+                          <a t-attf-href="./#{ line.id }/#{ quotation.id }/#{ quotation.access_token }/update_line" class="mb8 js_update_line_json pull-right hidden-print" >
                               <span class="fa fa-trash-o"></span>
                           </a>
+			</div>
                       </td>
                   </tr>
                   <tr>
                       <td></td><td></td><td></td><td></td>
                       <td class="text-right"><strong>Subtotal:</strong></td>
                       <td class="text-right">
-                          <strong data-id="sub_total_amount" t-field="quotation.amount_untaxed" t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td></td><td></td><td></td><td></td>
-                      <td class="text-right">Taxes:</td>
-                      <td class="text-right">
-                          <span data-id="tax_amount" t-field="quotation.amount_tax" t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
-                      </td>
-                  </tr>
-                  <tr>
-                      <td></td><td></td><td></td><td></td>
-                      <td class="text-right"><strong>Total:</strong></td>
-                      <td class="text-right">
-                          <strong data-id="total_amount" t-field="quotation.amount_total" t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
+                          <span data-id="sub_total_amount" t-field="quotation.amount_untaxed" class="subtotal_field"
+				 t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
                   </tr>
               </tbody>
           </table>
       </section>
       <t t-call="bc_website_purchase.quotation_toolbar"/>
-      <!--section id="terms" class="container" t-if="q u otation.note">
-          <h2 class="page-header">Terms &amp; Conditions</h2>
-          <p t-field="q u o tation.note"/> TBRI
-      </section -->
   </template>
 
   <template id="change_quantity" inherit_id="bc_website_purchase.pricing" active="False" customize_show="True" name="Change Quantity">
@@ -180,12 +139,13 @@
 
   <template id="quotation_toolbar">
       <div class="text-center hidden-print" t-if="quotation.state in ('draft', 'sent', 'waiting_date')">
-          <a class="btn btn-success fa fa-check" data-toggle="modal" data-target="#modelaccept">
+          <!-- a class="btn btn-success fa fa-check" data-toggle="modal" data-target="#modelaccept" -->
+          <a class="btn btn-success fa fa-check" data-toggle="modal" id="btnSubmit">
               Submit
           </a>
-          <a class="btn btn-info fa fa-comment" type="submit" href="#discussion">
-              Feedback
-          </a>
+	  <a class="btn btn-info fa fa-comment" type="submit" id="btnCalc" href="#discussion">
+              Calc
+	  </a>
           <a class="btn btn-danger fa fa-times" data-toggle="modal" data-target="#modeldecline">
               Cancel
           </a>
@@ -199,23 +159,6 @@
               <div class="row mt16">
                   <div class="col-md-3">
                       <div class="bs-sidebar">
-                          <div class="text-center hidden-print" t-if="quotation.state in ('draft', 'sent', 'waiting_date')" style="padding: 10px">
-                              <a t-if="order_valid" class="btn btn-primary btn-block fa fa-check" data-toggle="modal" data-target="#modelaccept">
-                                  Accept Order
-                              </a>
-                              <a t-if="not order_valid" href="#discussion" class="btn btn-info btn-block">
-                                  <strong>This offer expired!</strong><br/>
-                                  Contact us for new quote.
-                              </a>
-                              <div class="mt8" t-if="order_valid">
-                                  <a type="submit" href="#discussion">
-                                      Ask Changes
-                                  </a> or
-                                  <a data-toggle="modal" data-target="#modeldecline">
-                                      Reject
-                                  </a>
-                              </div>
-                          </div>
                           <hr class="mt0 mb0"/>
                           <t t-call="bc_website_purchase.navigation_menu"/>
                           <hr class="mt0 mb0"/>
@@ -252,10 +195,6 @@
                           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
                           Your message has been successfully sent!
                       </div>
-                      <div class="alert alert-warning alert-dismissable" t-if="message==2">
-                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
-                          This quotation has been rejected. <a href="#discussion">Contact us</a> if you want a new one.
-                      </div>
                       <div class="alert alert-warning alert-dismissable" t-if="message==3">
                           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
                           This order has been validated. Thanks for your trust
@@ -264,18 +203,19 @@
                       </div>
                       <a id="introduction"/>
                       <h1 class="page-header mt16">
+			  <span t-field="quotation.id" id="quotation_id" />
                           <span t-if="quotation.state in ('draft','sent','cancel')">Quotation</span>
                           <span t-if="quotation.state not in ('draft','sent','cancel')">Order</span>
                           <em t-esc="quotation.name"/>
-                          <small t-field="quotation.state"/>
-                          <div groups="base.group_website_publisher" t-ignore="true" class="pull-right css_editable_mode_hidden">
-                              <a class="btn btn-info hidden-print" t-att-href="'/web#return_label=Website&amp;model=%s&amp;id=%s' % (quotation._name, quotation.id)">Update Quote</a>
-                          </div>
+                          <small t-field="quotation.state" />
                       </h1>
 
                       <div class="modal fade" id="modelaccept" role="dialog" aria-hidden="true">
                         <div class="modal-dialog">
-                          <form id="accept" method="POST" t-attf-action="/purchase/accept/#{quotation.id}/?token=#{quotation.access_token}" class="js_accept_json modal-content">
+                          <!-- form id="accept" method="POST" t-attf-action="/purchase/accept/#{quotation.id}/?token=#{quotation.access_token}" 
+				class="js_accept_json modal-content" -->
+                          <form id="accept" method="POST" t-attf-action="/purchase/#{quotation.id}/#{quotation.access_token}/accept" 
+				class="js_accept_json modal-content">
                             <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
                               <h4 class="modal-title">Validate Order</h4>
@@ -287,12 +227,7 @@
                                   for an amount of
                                   <b data-id="total_amount" t-field="quotation.amount_total"
                                     t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
-                                  with payment terms: <!-- b t-f i e ld="quot ation.paym ent_term"/-->.
                               </p>
-                              <div id="signer" class="form-group">
-                                  <label class="control-label" for="name">Your Name:</label>
-                                  <input type="text" name="signer" id="name" class="form-control"/>
-                              </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" t-attf-class="btn btn-primary">Sign Order</button> or
@@ -309,17 +244,18 @@
 
                       <div class="modal fade" id="modeldecline" role="dialog" aria-hidden="true">
                         <div class="modal-dialog">
-                          <form id="decline" method="POST" t-attf-action="/purchase/#{quotation.id}/#{quotation.access_token}/decline" class="modal-content">
+                          <form id="decline" method="POST" t-attf-action="/purchase/#{quotation.id}/#{quotation.access_token}/decline" 
+				class="modal-content">
                             <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
-                              <h4 class="modal-title">Reject This Quote</h4>
+                              <h4 class="modal-title">Reject this Quote</h4>
                             </div>
                             <div class="modal-body">
                               <p>
-                                  Tell us why you are refusing this quotation, this will help us improve our services.
+                                  Are you sure you want to cancel the update?.
                               </p>
-                              <textarea rows="4" name="decline_message" placeholder="Your feedback....." class="form-control"/>
                             </div>
+                            <textarea rows="4" name="decline_message" placeholder="Your feedback....." class="form-control"/>
                             <div class="modal-footer">
                                 <button type="submit" t-att-id="quotation.id" class="btn btn-primary">Reject</button> or
                                 <button type="button" class="btn btn-link" data-dismiss="modal" style="padding: 0">Cancel</button>
@@ -333,7 +269,10 @@
                               <div class="row">
                                   <label class="col-sm-4 text-right">Supplier:</label>
                                   <div class="col-sm-8">
-                                      <div t-field="quotation.partner_id"/>
+                                      <div t-field="quotation.partner_id" t-field-options='{
+                                          "widget": "contact",
+                                          "fields": ["address", "name", "phone", "email"]
+                                          }'/>
                                   </div>
                               </div>
                               <div class="row">
@@ -384,18 +323,15 @@
                       <a id="offer"/>
                       <div t-field="quotation.website_description"/>
 
-                      <t t-foreach="quotation.order_line" t-as="line">
+                      <!-- t t-foreach="quotation.order_line" t-as="line">
                           <a t-att-id="line.id"/>
                           <div t-field="line.website_description"/>
-                      </t>
+                      </t -->
 
                       <div class="oe_structure"/>
 
                       <a id="pricing"/>
                       <t t-call="bc_website_purchase.pricing"/>
-
-                      <a id="options"/>
-                      <t t-call="bc_website_purchase.optional_products"/>
 
                       <a id="discussion"/>
                       <t t-call="bc_website_purchase.chatter"/>
@@ -414,85 +350,7 @@
     </div>
   </template>
 
-  <!-- Options:Quotation Signature -->
-  <template id="opt_quotation_signature" name="Ask Signature" customize_show="True" inherit_id="bc_website_purchase.po_quotation">
-      <xpath expr="//div[@id='sign-dialog']" position="inside">
-        <div class="panel panel-default mt16 mb0" id="drawsign">
-            <div class="panel-heading">
-                <div class="pull-right">
-                    <a id="sign_clean" class="btn btn-xs">Clear</a>
-                </div>
-                <strong>Draw your signature</strong>
-            </div>
-            <div id="signature" class="panel-body" style="padding: 0"/>
-        </div>
-      </xpath>
-  </template>
-
-  <template id="optional_products">
-    <div class="container mt32" t-if="option">
-        <section data-snippet-id="title">
-            <h1 class="page-header">Options</h1>
-        </section>
-        <section id="options">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Products</th>
-                        <th>Description</th>
-                        <th></th>
-                        <th class="text-right">Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr t-foreach="quotation.options" t-as="option">
-                        <t t-if="not option.line_id">
-                            <td>
-                                <div t-field="option.product_id.name"/>
-                            </td>
-                            <td>
-                                <div t-field="option.name"/>
-                            </td>
-                            <td><!--
-                                <strong t-if="option.discount" class="text-info">
-                                    <t t-esc="((option.discount % 1) and '%s' or '%d') % option.discount"/>% discount
-                                </strong> -->DISC TBRI
-                            </td>
-                            <td>
-                                <strong class="text-right">
-                                    <form id="price_unit" t-attf-action="/purchase/#{quotation.id}/#{quotation.access_token}/post" method="POST">
-                  <!-- <img class="img pull-left img-rounded" t-att-src="website.image_url(user_id.partner_id, 'image_small')" style="width: 50px; margin-right: 10px;"/> -->
-                                        GJEDNA
-                  <div class="pull-left mb32" style="width: 75%%">
-                      <input type="text" name="price_unit" class="form-control" placeholder="Price pr unit"><t t-esc="line.price_unit" /></input>
-                      <!-- <textarea rows="4" name="comment" class="form-control" placeholder="Send us a note..."></textarea>-->
-                      <button type="submit" class="btn btn-primary mt8">Update</button>
-                  </div>
-              </form>
-                                    <!--
-                                    <div t-field="option.price_unit"
-                                    t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}' /> FUNGERER OGSÅ -->
-                                    <!-- TBRI t-att-style="option.discount and 'text-decoration: line-through' or ''"
-                                    t-att-class="option.discount and 'text-danger' or ''"/>
-                                    <div t-if="option.discount">
-                                        <t t-esc="'%.2f' % ((1-option.discount / 100.0) * option.price_unit)"/>
-                                    </div> -->
-                                </strong>
-                            </td>
-                            <td class="pull-right">
-                                <a t-attf-href="/purchase/add_line/#{ option.id }/#{ quotation.id }/#{ quotation.access_token }" class="mb8 hidden-print">
-                                    <span class="fa fa-shopping-cart"/>
-                                </a>
-                            </td>
-                        </t>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </div>
-  </template>
-
-  <template id="so_template" name="SO Template">
+  <template id="po_template" name="PO Template">
     <t t-call="website.layout">
         <body data-spy="scroll" data-target=".navspy" data-offset="50">
             <div class="container o_bc_website_purchase_quote">

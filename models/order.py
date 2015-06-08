@@ -1,5 +1,10 @@
 from openerp import models, api, fields
 
+class product_template(models.Model):
+    _inherit = "product.template"
+
+    ntty_url = fields.Char('NTTY URL', size=128, help='NTTY Hiperlink')
+
 class purchase_order_line(models.Model):
     _inherit = "purchase.order.line"
 

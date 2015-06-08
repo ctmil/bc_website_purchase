@@ -36,6 +36,9 @@ class purchase_quote(http.Controller):
     def view(self, order_id, token=None, message=False, **post):
         # use SUPERUSER_ID allow to access/view order for public user
         # only if he knows the private token
+        user_obj = request.registry.get('res.users')
+	user = user_obj.browse(request.cr,token and SUPERUSER_ID or request.uid, request.uid)
+	
         order_obj = request.registry.get('purchase.order')
         order = order_obj.browse(request.cr, token and SUPERUSER_ID or request.uid, order_id)
         now = time.strftime('%Y-%m-%d')
@@ -45,8 +48,19 @@ class purchase_quote(http.Controller):
             # Log only once a day
             if request.session.get('view_quote',False)!=now:
                 request.session['view_quote'] = now
-                body=_('Quotation viewed by customer')
+                body=_('Quotation viewed by supplier')
                 self.__message_post(body, order_id, type='comment')
+
+        # Log only once a day
+	partner_id = user.partner_id.parent_id.id or user.partner_id.id
+	if partner_id and request.uid != SUPERUSER_ID:
+		if partner_id != order.partner_id.id:
+			return request.website.render('website.404')
+	
+        if request.session.get('view_quote',False)!=now:
+        	request.session['view_quote'] = now
+        	body=_('Quotation viewed by supplier')
+        	self.__message_post(body, order_id, type='comment')
 
         # If the supplier is viewing this, he has received it. If he has received it it must be sent
         order_obj.signal_workflow(request.cr, SUPERUSER_ID, [order_id], 'send_rfq', context=request.context)
@@ -63,9 +77,9 @@ class purchase_quote(http.Controller):
         }
         return request.website.render('bc_website_purchase.po_quotation', values)
 
-    @http.route(['/purchase/accept'], type='json', auth="public", website=True)
+    # @http.route(['/purchase/accept'], type='json', auth="public", website=True)
+    @http.route(['/purchase/<int:order_id>/<token>/accept'], type='http', auth="public", website=True)
     def accept(self, order_id, token=None, signer=None, sign=None, **post):
-        print "ACCEPT!-------------------------------------"
         order_obj = request.registry.get('purchase.order')
         order = order_obj.browse(request.cr, SUPERUSER_ID, order_id)
         if token != order.access_token:
@@ -74,7 +88,7 @@ class purchase_quote(http.Controller):
         order_obj.signal_workflow(request.cr, SUPERUSER_ID, [order_id], 'bid_received', context=request.context)
         message = _('RFQ signed by %s') % (signer,)
         self.__message_post(message, order_id, type='comment', subtype='mt_comment', attachments=attachments)
-        return True
+        return werkzeug.utils.redirect("/purchase/%s" % (order_id))
 
     @http.route(['/purchase/<int:order_id>/<token>/decline'], type='http', auth="public", website=True)
     def decline(self, order_id, token, **post):
@@ -117,98 +131,33 @@ class purchase_quote(http.Controller):
         return True
 
     @http.route(['/purchase/update_line'], type='json', auth="public", website=True)
-    def update(self, line_id, remove=False, unlink=False, order_id=None, token=None, **post):
-        order = request.registry.get('purchase.order').browse(request.cr, SUPERUSER_ID, int(order_id))
-        if token != order.access_token:
-            return request.website.render('website.404')
-        if order.state not in ('draft','sent'):
-            return False
-        line_id=int(line_id)
-        if unlink:
-            request.registry.get('purchase.order.line').unlink(request.cr, SUPERUSER_ID, [line_id], context=request.context)
-            return False
-        number=(remove and -1 or 1)
+    # def update_line(self, update_data, **post):
+    def update_line(self, **post):
+	order_id = post['order_id']
+	post_length = len(post['line_id'])
+       	order_obj = request.registry.get('purchase.order')
+	order = order_obj.browse(request.cr, SUPERUSER_ID or request.uid, order_id)
+	if order.state not in ('draft','sent'):
+        	return False
 
-        order_line_obj = request.registry.get('purchase.order.line')
-        order_line_val = order_line_obj.read(request.cr, SUPERUSER_ID, [line_id], [], context=request.context)[0]
-        quantity = order_line_val['product_qty'] + number
-        order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], {'product_qty': (quantity)}, context=request.context)
-        return [str(quantity), str(order.amount_total)]
+	for i in range(len(post['line_id'])):	
+		line_id = post['line_id'][i]
+		leadtime = post['leadtime'][i]
+		price_unit = post['price_unit'][i]
+		vals = {
+			'price_unit': price_unit,
+			'leadtime': leadtime,
+			}
+	        line_id=int(line_id)
 
-    @http.route(['/purchase/update_unitprice'], type='json', auth="public", website=True)
-    def update(self, line_id, order_id=None, token=None, new_price=None, **post):
-        order = request.registry.get('purchase.order').browse(request.cr, SUPERUSER_ID, int(order_id))
-        if token != order.access_token:
-            return request.website.render('website.404')
-        if order.state not in ('draft','sent'):
-            return False
-        line_id=int(line_id)
-        print "NEW PRICE", new_price
-        #new_price = post.get('price_unit')
-
-        unit_price = float(new_price)
-        order_line_obj = request.registry.get('purchase.order.line')
-
-        #quantity = order_line_val['product_qty'] + number
-        order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], {'price_unit': (unit_price)}, context=request.context)
-        order_line_val = order_line_obj.read(request.cr, SUPERUSER_ID, [line_id], ['price_subtotal'], context=request.context)[0]
-        return [str(unit_price), str(order_line_val['price_subtotal']), str(order.amount_untaxed), str(order.amount_tax), str(order.amount_total)]
-
-    @http.route(['/purchase/update_leadtime'], type='json', auth="public", website=True)
-    def update(self, line_id, order_id=None, token=None, new_leadtime=None, **post):
-        order = request.registry.get('purchase.order').browse(request.cr, SUPERUSER_ID, int(order_id))
-        if token != order.access_token:
-            return request.website.render('website.404')
-        if order.state not in ('draft','sent'):
-            return False
-        line_id=int(line_id)
-        print "NEW PRICE", new_leadtime
-        #new_price = post.get('price_unit')
-
-        unit_leadtime = float(new_leadtime)
-        order_line_obj = request.registry.get('purchase.order.line')
-
-        #quantity = order_line_val['product_qty'] + number
-        order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], {'leadtime': (unit_leadtime)}, context=request.context)
-        order_line_val = order_line_obj.read(request.cr, SUPERUSER_ID, [line_id], ['price_subtotal'], context=request.context)[0]
-        return [str(unit_leadtime), str(order_line_val['price_subtotal']), str(order.amount_untaxed), str(order.amount_tax), str(order.amount_total)]
+        	order_line_obj = request.registry.get('purchase.order.line')
+	        order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], vals, context=request.context)
+        return True
 
     @http.route(["/purchase/template/<model('purchase.quote.template'):quote>"], type='http', auth="user", website=True)
     def template_view(self, quote, **post):
         values = { 'template': quote }
         return request.website.render('bc_website_purchase.po_template', values)
 
-    @http.route(["/purchase/add_line/<int:option_id>/<int:order_id>/<token>"], type='http', auth="public", website=True)
-    def add(self, option_id, order_id, token, **post):
-        vals = {}
-        order = request.registry.get('purchase.order').browse(request.cr, SUPERUSER_ID, order_id)
-        if token != order.access_token:
-            return request.website.render('website.404')
-        option_obj = request.registry.get('purchase.order.option')
-        option = option_obj.browse(request.cr, SUPERUSER_ID, option_id)
-
-        res = request.registry.get('purchase.order.line').product_id_change(request.cr, SUPERUSER_ID, order_id,
-            False, option.product_id.id, option.quantity, option.uom_id.id, option.quantity, option.uom_id.id,
-            option.name, order.partner_id.id, False, True, time.strftime('%Y-%m-%d'),
-            False, order.fiscal_position.id, True, request.context)
-        vals = res.get('value', {})
-        if 'tax_id' in vals:
-            vals['tax_id'] = [(6, 0, vals['tax_id'])]
-
-        vals.update({
-            'price_unit': option.price_unit,
-            'website_description': option.website_description,
-            'name': option.name,
-            'order_id': order.id,
-            'product_id' : option.product_id.id,
-            #'product_uos_qty': option.quantity,
-            #'product_uos': option.uom_id.id,
-            'product_qty': option.quantity,
-            'product_uom': option.uom_id.id,
-            #'discount': option.discount,
-        })
-        line = request.registry.get('purchase.order.line').create(request.cr, SUPERUSER_ID, vals, context=request.context)
-        option_obj.write(request.cr, SUPERUSER_ID, [option.id], {'line_id': line}, context=request.context)
-        return werkzeug.utils.redirect("/purchase/%s/%s#pricing" % (order.id, token))
 
 
