@@ -152,6 +152,30 @@ class purchase_quote(http.Controller):
 
         	order_line_obj = request.registry.get('purchase.order.line')
 	        order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], vals, context=request.context)
+	order_obj.signal_workflow(request.cr, SUPERUSER_ID, [order_id], 'bid_received', context=request.context)
+        return True
+
+    @http.route(['/purchase/save'], type='json', auth="public", website=True)
+    def save(self, **post):
+	order_id = post['order_id']
+	post_length = len(post['line_id'])
+       	order_obj = request.registry.get('purchase.order')
+	order = order_obj.browse(request.cr, SUPERUSER_ID or request.uid, order_id)
+	if order.state not in ('draft','sent'):
+        	return False
+
+	for i in range(len(post['line_id'])):	
+		line_id = post['line_id'][i]
+		leadtime = post['leadtime'][i]
+		price_unit = post['price_unit'][i]
+		vals = {
+			'price_unit': price_unit,
+			'leadtime': leadtime,
+			}
+	        line_id=int(line_id)
+
+        	order_line_obj = request.registry.get('purchase.order.line')
+	        order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], vals, context=request.context)
         return True
 
     @http.route(["/purchase/template/<model('purchase.quote.template'):quote>"], type='http', auth="user", website=True)

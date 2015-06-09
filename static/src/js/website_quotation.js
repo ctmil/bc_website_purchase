@@ -26,8 +26,59 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 
 
    // Click on the submit button
-   $('#btnSubmit').on('click', function (ev) {
+   $('#btnSave').on('click', function (ev) {
+	console.log('Clicked');
+	// Reads quotation ID
+	var quotation_id = parseInt($('#quotation_id').text());
 
+	var line_ids = [];
+	var line_unit_prices = [];
+	var line_leadtimes = [];
+	var line_update = []
+	var i = 0;
+
+	// Reads quotation lines IDs	
+	$('.columnID').each(function(index,element) {
+		var element_column = parseInt($(element).text());
+		if (!isNaN(element_column)){
+			line_ids.push(parseInt($(element).text()));
+			}
+		});
+	
+	// Reads quotation lines unit prices
+	$('.update_line.js_unitprice.input-group').each(function(index,element) {
+		line_unit_prices.push(parseInt($(element).val()));
+		});
+
+	// Reads quotation  prices
+	$('.update_line.js_leadtime.input-group').each(function(index,element) {
+		line_leadtimes.push(parseInt($(element).val()));
+		});
+
+	var i = 0;
+	for ( i = 0; i < line_ids.length ; i++) {
+		console.log(line_ids[i]);
+		console.log(line_unit_prices[i]);
+		console.log(line_leadtimes[i]);
+        	openerp.jsonRpc("/purchase/save", 'call', {
+                	'order_id': quotation_id,
+                	'line_id': line_ids,
+                	'price_unit': line_unit_prices,
+                	'leadtime': line_leadtimes,
+	                })
+        	        .then(function (data) {
+				$(".update_line.js_unitprice.input-group").prop('disabled', true);
+				$(".update_line.js_leadtime.input-group").prop('disabled', true);
+	                });
+		}
+
+        return false;
+	
+	});
+
+   // Click on the submit button
+   $('#btnSubmit').on('click', function (ev) {
+	console.log('Clicked');
 	// Reads quotation ID
 	var quotation_id = parseInt($('#quotation_id').text());
 
@@ -74,16 +125,6 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 
         return false;
 	
-	//$('.update_line.js_unitprice.input-group').each(function(index,element) {
-	//	subtotal.push(parseInt($(element).val()));
-	//	});
-	//for ( i = 0; i < subtotal.length; i ++) {
-	//	total_order = total_order + subtotal[i] * subtotal_qty[i];
-	//	total_order_list.push(subtotal[i] * subtotal_qty[i]);
-	//	}
-	//$('.js_line_subtotal span').each(function(index,element) {
-	//	$(element).text(total_order_list[index]);
-	//	});
 	});
 
    // Click on the calc button

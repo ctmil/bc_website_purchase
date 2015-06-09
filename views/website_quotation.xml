@@ -23,7 +23,7 @@
                       <th></th>
                       <th class="text-right">Unit Price</th>
                       <th class="text-right">Price</th>
-		      <th></th>
+		      <!-- th></th -->
                   </tr>
               </thead>
               <tbody>
@@ -61,17 +61,16 @@
                               t-att-data="line.id"
                               t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
-                      <td>
+                      <!-- td>
 			<div id="delete_button">
-                          <!--a t-attf-href="./update_line/#{ line.id }/?order_id=#{ quotation.id }&amp;unlink=True&amp;token=#{ quotation.access_token }" class="mb8 js_update_line_json pull-right hidden-print" t-if="line.option_line_id" -->
                           <a t-attf-href="./#{ line.id }/#{ quotation.id }/#{ quotation.access_token }/update_line" class="mb8 js_update_line_json pull-right hidden-print" >
                               <span class="fa fa-trash-o"></span>
                           </a>
 			</div>
-                      </td>
+                      </td -->
                   </tr>
                   <tr>
-                      <td></td><td></td><td></td><td></td>
+                      <td></td><td></td><td></td><td /><td />
                       <td class="text-right"><strong>Subtotal:</strong></td>
                       <td class="text-right">
                           <span data-id="sub_total_amount" t-field="quotation.amount_untaxed" class="subtotal_field"
@@ -142,6 +141,9 @@
           <!-- a class="btn btn-success fa fa-check" data-toggle="modal" data-target="#modelaccept" -->
           <a class="btn btn-success fa fa-check" data-toggle="modal" id="btnSubmit">
               Submit
+          </a>
+          <a class="btn btn-warning fa fa-floppy-o" type="submit" id="btnSave">
+              Save
           </a>
 	  <a class="btn btn-info fa fa-comment" type="submit" id="btnCalc" href="#discussion">
               Calc
