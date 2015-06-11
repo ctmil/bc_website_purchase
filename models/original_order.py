@@ -149,7 +149,8 @@ class purchase_order(osv.osv):
         'user_id': fields.many2one('res.users', 'Salesperson', states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}, select=True, track_visibility='onchange'),
     }
     _defaults = {
-        'access_token': lambda self, cr, uid, ctx={}: str(uuid.uuid4())
+        'access_token': lambda self, cr, uid, ctx={}: str(uuid.uuid4()),
+	'template_id': lambda self,cr,uid,ctx={}: self.pool.get('purchase.quote.template').search(cr,uid,[])[0] or None,
     }
 
 
