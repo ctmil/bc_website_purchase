@@ -41,9 +41,12 @@
                           </div>
                       </td>
                       <td>
-                              <div class="input-group mb32" style="width:100%">
+                              <div class="input-group mb32" style="width:100%" t-if="line.product_id.product_tmpl_id.type == 'product'">
                                   <input type="text" name="leadtime" class="update_line js_leadtime input-group" 
 					t-att-value="line.leadtime"/>
+                              </div>
+                              <div t-if="line.product_id.product_tmpl_id.type != 'product'">
+                                 	<span t-field="line.leadtime"/>
                               </div>
                       </td>
 		      <td />
@@ -61,13 +64,6 @@
                               t-att-data="line.id"
                               t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
-                      <!-- td>
-			<div id="delete_button">
-                          <a t-attf-href="./#{ line.id }/#{ quotation.id }/#{ quotation.access_token }/update_line" class="mb8 js_update_line_json pull-right hidden-print" >
-                              <span class="fa fa-trash-o"></span>
-                          </a>
-			</div>
-                      </td -->
                   </tr>
                   <tr>
                       <td></td><td></td><td></td><td /><td />
@@ -138,7 +134,6 @@
 
   <template id="quotation_toolbar">
       <div class="text-center hidden-print" t-if="quotation.state in ('draft', 'sent', 'waiting_date')">
-          <!-- a class="btn btn-success fa fa-check" data-toggle="modal" data-target="#modelaccept" -->
           <a class="btn btn-success fa fa-check" data-toggle="modal" id="btnSubmit">
               Submit
           </a>
