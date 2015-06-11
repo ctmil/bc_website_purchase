@@ -184,7 +184,8 @@ class purchase_order(osv.osv):
         quote = self.browse(cr, uid, quote_id[0], context=context)
         return {
             'type': 'ir.actions.act_url',
-            'target': 'self',
+            # 'target': 'self',
+            'target': '_blank',
             'url': '/purchase/%s' % (quote.id)
         }
 
