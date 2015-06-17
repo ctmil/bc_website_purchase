@@ -46,7 +46,7 @@
 					t-att-value="line.leadtime"/>
                               </div>
                               <div t-if="line.product_id.product_tmpl_id.type != 'product'">
-                                 	<span t-field="line.leadtime"/>
+                                 	<span>N/A</span>
                               </div>
                       </td>
 		      <td />
@@ -65,14 +65,14 @@
                               t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
                   </tr>
-                  <tr>
+                  <!-- tr>
                       <td></td><td></td><td></td><td /><td />
                       <td class="text-right"><strong>Subtotal:</strong></td>
                       <td class="text-right">
                           <span data-id="sub_total_amount" t-field="quotation.amount_untaxed" class="subtotal_field"
 				 t-field-options='{"widget": "monetary","display_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
-                  </tr>
+                  </tr -->
               </tbody>
           </table>
       </section>
@@ -142,9 +142,9 @@
           <a class="btn btn-warning fa fa-floppy-o" type="submit" id="btnSave">
               Save
           </a>
-	  <a class="btn btn-info fa fa-comment" type="submit" id="btnCalc" href="#discussion">
+	  <!-- a class="btn btn-info fa fa-comment" type="submit" id="btnCalc" href="#discussion">
               Calc
-	  </a>
+	  </a -->
           <a class="btn btn-danger fa fa-times" data-toggle="modal" data-target="#modeldecline">
               Cancel
           </a>
