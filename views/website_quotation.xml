@@ -79,7 +79,7 @@
       <t t-call="bc_website_purchase.quotation_toolbar"/>
   </template>
 
-  <template id="change_quantity" inherit_id="bc_website_purchase.pricing" active="False" customize_show="True" name="Change Quantity">
+  <!-- template id="change_quantity" inherit_id="bc_website_purchase.pricing" active="False" customize_show="True" name="Change Quantity">
       <xpath expr="//div[@id='quote_qty']" position="replace">
           <div class="input-group oe_website_spinner">
               <span class="input-group-addon hidden-print">
@@ -95,7 +95,7 @@
               </span>
           </div>
       </xpath>
-  </template>
+  </template -->
 
   <template id="chatter">
       <h1 class="page-header hidden-print">History</h1>
