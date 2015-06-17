@@ -319,8 +319,8 @@
                           </div>
                       </div>
 
-                      <a id="offer"/>
-                      <div t-field="quotation.website_description"/>
+                      <!-- a id="offer"/>
+                      <div t-field="quotation.website_description"/ -->
 
                       <div class="oe_structure"/>
 

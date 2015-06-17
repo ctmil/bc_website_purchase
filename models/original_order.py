@@ -150,7 +150,7 @@ class purchase_order(osv.osv):
     }
     _defaults = {
         'access_token': lambda self, cr, uid, ctx={}: str(uuid.uuid4()),
-	'template_id': lambda self,cr,uid,ctx={}: self.pool.get('purchase.quote.template').search(cr,uid,[])[0] or None,
+	# 'template_id': lambda self,cr,uid,ctx={}: self.pool.get('purchase.quote.template').search(cr,uid,[])[0] or None,
     }
 
 
