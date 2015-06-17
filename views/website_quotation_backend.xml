@@ -21,8 +21,8 @@
                     <field name="leadtime" />
                 </xpath>
                 <xpath expr="//header/button[@name='print_quotation']" position="after">
-                    <button name="open_quotation" string="View Quotation" type="object"
-                        attrs="{'invisible': [('template_id','=',False)]}"/>
+                    <button name="open_quotation" string="View Quotation" type="object" />
+                       <!-- attrs="{'invisible': [('template_id','=',False)]}"/ -->
                 </xpath>
                 <xpath expr="//page[@string='Products']" position="after">
                     <page string="Suggested Products">

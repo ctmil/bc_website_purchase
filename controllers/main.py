@@ -52,10 +52,10 @@ class purchase_quote(http.Controller):
                 self.__message_post(body, order_id, type='comment')
 
         # Log only once a day
-	partner_id = user.partner_id.parent_id.id or user.partner_id.id
-	if partner_id and request.uid != SUPERUSER_ID:
-		if partner_id != order.partner_id.id:
-			return request.website.render('website.404')
+	#partner_id = user.partner_id.parent_id.id or user.partner_id.id
+	#if partner_id and request.uid != SUPERUSER_ID:
+	#	if partner_id != order.partner_id.id:
+	#		return request.website.render('website.404')
 	
         if request.session.get('view_quote',False)!=now:
         	request.session['view_quote'] = now

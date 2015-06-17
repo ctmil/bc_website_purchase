@@ -116,6 +116,7 @@
       </ul>
   </template>
 
+
   <!-- Options:Quotation Chatter: user can reply -->
   <template id="opt_quotation_chatter_post_complete_comment" name="Allow Comments" customize_show="True" inherit_id="bc_website_purchase.chatter">
       <xpath expr="//h1" position="after">
@@ -124,6 +125,7 @@
                   <img class="img pull-left img-rounded" t-att-src="website.image_url(user_id.partner_id, 'image_small')" style="width: 50px; margin-right: 10px;"/>
                   <div class="pull-left mb32" style="width: 75%%">
                       <textarea rows="4" name="comment" class="form-control" placeholder="Send us a note..."></textarea>
+		      <!-- t t-call="chatter.compose_message.add_attachment"/ -->
                       <button type="submit" class="btn btn-primary mt8">Send</button>
                   </div>
               </form>
@@ -319,11 +321,6 @@
 
                       <a id="offer"/>
                       <div t-field="quotation.website_description"/>
-
-                      <!-- t t-foreach="quotation.order_line" t-as="line">
-                          <a t-att-id="line.id"/>
-                          <div t-field="line.website_description"/>
-                      </t -->
 
                       <div class="oe_structure"/>
 
