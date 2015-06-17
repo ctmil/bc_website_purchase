@@ -24,6 +24,8 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 		}
 	});
 
+   $('#btnCalc').hide();
+
 
    // Click on the submit button
    $('#btnSave').on('click', function (ev) {

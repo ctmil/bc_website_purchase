@@ -142,9 +142,9 @@
           <a class="btn btn-warning fa fa-floppy-o" type="submit" id="btnSave">
               Save
           </a>
-	  <!-- a class="btn btn-info fa fa-comment" type="submit" id="btnCalc" href="#discussion">
+	  <a class="btn btn-info fa fa-comment" type="submit" id="btnCalc" href="#discussion">
               Calc
-	  </a -->
+	  </a>
           <a class="btn btn-danger fa fa-times" data-toggle="modal" data-target="#modeldecline">
               Cancel
           </a>
