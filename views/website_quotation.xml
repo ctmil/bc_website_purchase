@@ -32,7 +32,10 @@
                           <span t-field="line.id" />
                       </td>
                       <td>
-                          <a t-field="line.name" t-attf-href="http://{{ line.product_id.product_tmpl_id.ntty_url }}" target="_blank"/>
+                          <!-- a t-field="line.product_id.default_code + line.name"
+				 t-attf-href="http://{{ line.product_id.product_tmpl_id.ntty_url }}" target="_blank"/ -->
+                          <a t-esc="line.name"
+				 t-attf-href="http://{{ line.product_id.product_tmpl_id.ntty_url }}" target="_blank"/>
                       </td>
                       <td>
                           <div id="quote_qty">
@@ -41,11 +44,11 @@
                           </div>
                       </td>
                       <td>
-                              <div class="input-group mb32" style="width:100%" t-if="line.product_id.product_tmpl_id.type == 'product'">
+                              <div class="input-group mb32" style="width:100%" t-if="line.product_id.product_tmpl_id.type != 'service'">
                                   <input type="text" name="leadtime" class="update_line js_leadtime input-group" 
 					t-att-value="line.leadtime"/>
                               </div>
-                              <div t-if="line.product_id.product_tmpl_id.type != 'product'">
+                              <div t-if="line.product_id.product_tmpl_id.type == 'service'">
                                  	<span>N/A</span>
                               </div>
                       </td>
@@ -235,6 +238,9 @@
                           </form>
                         </div>
                       </div>
+
+                      <!-- div class="alert alert-warning alert-dismissable" id="id-alert-box" >
+                      </div -->
 
                       <div class="alert alert-warning alert-dismissable" t-if="quotation.state == 'cancel'">
                           <button type="button" class="close hidden-print" data-dismiss="alert" aria-hidden="true">&amp;times;</button>

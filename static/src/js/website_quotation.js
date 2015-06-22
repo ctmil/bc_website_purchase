@@ -7,7 +7,7 @@ $('#quotation_id').css("visibility","hidden");
 website.if_dom_contains('div.o_bc_website_purchase', function () {
 
    $('.update_line.js_unitprice.input-group').on('keydown',function(event){
-	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 190) {
+	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 190 || event.keyCode == 9 || event.keyCode == 13) {
 		return true;
 		}
 	else {
@@ -16,7 +16,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	});
 
    $('.update_line.js_leadtime.input-group').on('keydown',function(event){
-	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8) {
+	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13) {
 		return true;
 		}
 	else {
@@ -54,7 +54,12 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 
 	// Reads quotation  prices
 	$('.update_line.js_leadtime.input-group').each(function(index,element) {
-		line_leadtimes.push(parseInt($(element).val()));
+		if ( $(element).val() != 'N/A' ) {
+			line_leadtimes.push(parseInt($(element).val()));
+			}
+		else {
+			line_leadtimes.push(0);
+			}
 		});
 
 	var i = 0;
@@ -74,6 +79,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	                });
 		}
 
+	location.reload();
         return false;
 	
 	});
@@ -125,6 +131,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	                });
 		}
 
+	location.reload();
         return false;
 	
 	});

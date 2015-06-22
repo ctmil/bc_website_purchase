@@ -142,7 +142,11 @@ class purchase_quote(http.Controller):
 
 	for i in range(len(post['line_id'])):	
 		line_id = post['line_id'][i]
-		leadtime = post['leadtime'][i]
+		try:
+			leadtime = post['leadtime'][i]
+		except:
+			leadtime = 0
+			pass
 		price_unit = post['price_unit'][i]
 		vals = {
 			'price_unit': price_unit,
@@ -166,7 +170,11 @@ class purchase_quote(http.Controller):
 
 	for i in range(len(post['line_id'])):	
 		line_id = post['line_id'][i]
-		leadtime = post['leadtime'][i]
+		try:
+			leadtime = post['leadtime'][i]
+		except:
+			leadtime = 0
+			pass
 		price_unit = post['price_unit'][i]
 		vals = {
 			'price_unit': price_unit,
