@@ -149,7 +149,7 @@
               Calc
 	  </a>
           <a class="btn btn-danger fa fa-times" data-toggle="modal" data-target="#modeldecline">
-              Cancel
+              Decline
           </a>
       </div>
   </template>

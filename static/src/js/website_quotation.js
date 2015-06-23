@@ -7,7 +7,9 @@ $('#quotation_id').css("visibility","hidden");
 website.if_dom_contains('div.o_bc_website_purchase', function () {
 
    $('.update_line.js_unitprice.input-group').on('keydown',function(event){
-	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 190 || event.keyCode == 9 || event.keyCode == 13) {
+	console.log(event.keyCode);
+	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 190 || event.keyCode == 9 || 
+		event.keyCode == 13 || event.keyCode == 188) {
 		return true;
 		}
 	else {
@@ -76,6 +78,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
         	        .then(function (data) {
 				$(".update_line.js_unitprice.input-group").prop('disabled', true);
 				$(".update_line.js_leadtime.input-group").prop('disabled', true);
+			        location.reload();
 	                });
 		}
 
@@ -128,6 +131,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
         	        .then(function (data) {
 				$(".update_line.js_unitprice.input-group").prop('disabled', true);
 				$(".update_line.js_leadtime.input-group").prop('disabled', true);
+			        location.reload();
 	                });
 		}
 
