@@ -32,12 +32,15 @@ class purchase_quote(http.Controller):
     @http.route([
         "/purchase/<int:order_id>",
         "/purchase/<int:order_id>/<token>"
-    ], type='http', auth="public", website=True)
+    ], type='http', auth="user", website=True)
     def view(self, order_id, token=None, message=False, **post):
+
+        #import pdb;
+        #pdb.set_trace();        
         # use SUPERUSER_ID allow to access/view order for public user
         # only if he knows the private token
         user_obj = request.registry.get('res.users')
-	user = user_obj.browse(request.cr,token and SUPERUSER_ID or request.uid, request.uid)
+        user = user_obj.browse(request.cr,token and SUPERUSER_ID or request.uid, request.uid)
 	
         order_obj = request.registry.get('purchase.order')
         order = order_obj.browse(request.cr, token and SUPERUSER_ID or request.uid, order_id)
@@ -51,6 +54,17 @@ class purchase_quote(http.Controller):
                 body=_('Quotation viewed by supplier')
                 self.__message_post(body, order_id, type='comment')
 
+        if token is None and ( request.uid==user.id and user.active==False ):
+            if request.env.ref('web.login', False):
+                values = request.params.copy() or {}
+                values["redirect"] = "/purchase/%i" % (order_id);
+                return request.render('web.login', values)
+#            url = "/web/login?";
+#            redirect_url = "/purchase/%i" % (order_id)
+#            return """<html><head><script>
+#        window.location = '%sredirect=' + encodeURIComponent("%s");
+#    </script></head></html>
+#    """ % ( url, redirect_url )
         # Log only once a day
 	#partner_id = user.partner_id.parent_id.id or user.partner_id.id
 	#if partner_id and request.uid != SUPERUSER_ID:
