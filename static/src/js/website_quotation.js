@@ -51,7 +51,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	
 	// Reads quotation lines unit prices
 	$('.update_line.js_unitprice.input-group').each(function(index,element) {
-		line_unit_prices.push(parseInt($(element).val()));
+		line_unit_prices.push(parseFloat($(element).val()));
 		});
 
 	// Reads quotation  prices
@@ -109,7 +109,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	
 	// Reads quotation lines unit prices
 	$('.update_line.js_unitprice.input-group').each(function(index,element) {
-		line_unit_prices.push(parseInt($(element).val()));
+		line_unit_prices.push(parseFloat($(element).val()));
 		});
 
 	// Reads quotation  prices

@@ -57,11 +57,6 @@
                     <button name="%(action_purchase_requisition_suppliers)d" type="action"
                                 string="Request multiple quotations" icon="gtk-execute"
                                 attrs="{'invisible': ['|', ('line_ids','=',[]),('state', 'in', ('draft' ,'open','done'))]}"/>
-                    <!--
-                    <button name="action_purchase_requisition_suppliers" type="object"
-                                string="XRequest multiple quotations" icon="gtk-execute"
-                                attrs="{'invisible': ['|', ('line_ids','=',[]),('state', 'in', ('draft' ,'open','done'))]}"/>
-                                -->
                 </xpath>
                 <field name="multiple_rfq_per_supplier" position="after">
                     <field name="template_id"/>
