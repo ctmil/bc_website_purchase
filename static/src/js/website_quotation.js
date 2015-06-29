@@ -6,6 +6,10 @@ $('#quotation_id').css("visibility","hidden");
 
 website.if_dom_contains('div.o_bc_website_purchase', function () {
 
+   // Disable submit and save buttons on start
+   //$('#btnSave').disabled = True;
+   //$('#btnSubmit').disabled = True;
+
    $('.update_line.js_unitprice.input-group').on('keydown',function(event){
 	console.log(event.keyCode);
 	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 190 || event.keyCode == 9 || 
@@ -27,7 +31,6 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	});
 
    $('#btnCalc').hide();
-
 
    // Click on the submit button
    $('#btnSave').on('click', function (ev) {
@@ -165,6 +168,8 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 		$(element).text(total_order_list[index]);
 		});
 	$('.subtotal_field').children().text(total_order);
+
+
 	//for (i = 0 ; i < unit_prices_fields.length ; i++) {
 	//	var subtotal_field = parseInt(qty_fields[i].val()) * parseInt(unit_prices_fields[i].val());
 	//	console.log(subtotal_field);	

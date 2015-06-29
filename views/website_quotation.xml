@@ -253,14 +253,14 @@
 				class="modal-content">
                             <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&amp;times;</button>
-                              <h4 class="modal-title">Reject this Quote</h4>
+                              <h4 class="modal-title">Decline to bid</h4>
                             </div>
                             <div class="modal-body">
                               <p>
-                                  Are you sure you want to cancel the update?.
+                                  Are you sure you want to decline to bid?.
                               </p>
                             </div>
-                            <textarea rows="4" name="decline_message" placeholder="Your feedback....." class="form-control"/>
+                            <textarea rows="4" name="decline_message" placeholder="Please, can you provide a brief explanation for this declination?. Thank you in advance" class="form-control"/>
                             <div class="modal-footer">
                                 <button type="submit" t-att-id="quotation.id" class="btn btn-primary">Reject</button> or
                                 <button type="button" class="btn btn-link" data-dismiss="modal" style="padding: 0">Cancel</button>
