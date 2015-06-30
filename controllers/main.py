@@ -63,7 +63,8 @@ class purchase_quote(http.Controller):
 		if partner_id != order.partner_id.id:
 			return request.website.render('website.404')
 	else:
-		return request.website.render('website.404')
+		if request.uid != SUPERUSER_ID:
+			return request.website.render('website.404')
 	
         if request.session.get('view_quote',False)!=now:
         	request.session['view_quote'] = now
