@@ -3,17 +3,19 @@ $(function () {
 var website = openerp.website;
 $('.columnID').css("visibility","hidden");
 $('#quotation_id').css("visibility","hidden");
+var formChanged = false;
+$('#btnSave').css('background-color','#777');
+$('#btnSubmit').css('background-color','#777');
 
 website.if_dom_contains('div.o_bc_website_purchase', function () {
-
-   // Disable submit and save buttons on start
-   //$('#btnSave').disabled = True;
-   //$('#btnSubmit').disabled = True;
 
    $('.update_line.js_unitprice.input-group').on('keydown',function(event){
 	console.log(event.keyCode);
 	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 190 || event.keyCode == 9 || 
 		event.keyCode == 13 || event.keyCode == 188) {
+		formChanged = true;
+		$('#btnSave').css('background-color','#f0ad4e');
+		$('#btnSubmit').css('background-color','#5cb85c');
 		return true;
 		}
 	else {
@@ -23,6 +25,9 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 
    $('.update_line.js_leadtime.input-group').on('keydown',function(event){
 	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13) {
+		formChanged = true;
+		$('#btnSave').css('background-color','#f0ad4e');
+		$('#btnSubmit').css('background-color','#5cb85c');
 		return true;
 		}
 	else {
@@ -34,7 +39,10 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 
    // Click on the submit button
    $('#btnSave').on('click', function (ev) {
-	console.log('Clicked');
+	console.log('Clicked Save Button');
+	if (formChanged == false) {
+		return false;
+		}
 	// Reads quotation ID
 	var quotation_id = parseInt($('#quotation_id').text());
 
@@ -92,7 +100,10 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 
    // Click on the submit button
    $('#btnSubmit').on('click', function (ev) {
-	console.log('Clicked');
+	console.log('Clicked Submit Button');
+	if (formChanged == false) {
+		return false;
+		}
 	// Reads quotation ID
 	var quotation_id = parseInt($('#quotation_id').text());
 
