@@ -9,7 +9,7 @@ $('#btnSubmit').css('background-color','#777');
 
 // $('.tooltip').tooltipster();
 
-$('#message1').toggleClass('in');
+//$('#message1').toggleClass('in');
 
 website.if_dom_contains('div.o_bc_website_purchase', function () {
 
