@@ -7,6 +7,10 @@ var formChanged = false;
 $('#btnSave').css('background-color','#777');
 $('#btnSubmit').css('background-color','#777');
 
+// $('.tooltip').tooltipster();
+
+$('#message1').toggleClass('in');
+
 website.if_dom_contains('div.o_bc_website_purchase', function () {
 
    $('.update_line.js_unitprice.input-group').on('keydown',function(event){

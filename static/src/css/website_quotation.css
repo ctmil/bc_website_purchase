@@ -1,3 +1,18 @@
+.flyover {
+   left: 150%;
+   overflow: hidden;
+   position: fixed;
+   width: 50%;
+   opacity: 0.9;
+   z-index: 1050;
+   transition: left 0.6s ease-out 0s;
+}
+ 
+.flyover-centered {
+   top: 50%;
+   transform: translate(-50%, -50%);
+}
+
 .o_bc_website_purchase .bs-sidebar {
   position: fixed;
   z-index : 1;
