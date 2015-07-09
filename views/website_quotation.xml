@@ -263,7 +263,7 @@
                             </div>
                             <textarea rows="4" name="decline_message" placeholder="Please, can you provide a brief explanation for this declination?. Thank you in advance" class="form-control"/>
                             <div class="modal-footer">
-                                <button type="submit" t-att-id="quotation.id" class="btn btn-primary">Reject</button> or
+                                <button type="submit" t-att-id="quotation.id" class="btn btn-primary">Decline</button> or
                                 <button type="button" class="btn btn-link" data-dismiss="modal" style="padding: 0">Cancel</button>
                             </div>
                           </form>
