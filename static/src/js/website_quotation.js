@@ -68,6 +68,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	$('.update_line.js_unitprice.input-group').each(function(index,element) {
 		line_unit_prices.push(parseFloat($(element).val()));
 		});
+	console.log(line_unit_prices);
 
 	// Reads quotation  prices
 	$('.update_line.js_leadtime.input-group').each(function(index,element) {
