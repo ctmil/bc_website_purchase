@@ -247,6 +247,10 @@
                           <button type="button" class="close hidden-print" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
                           <strong>This quotation has been canceled.</strong> Contact us to get a new quote.
                       </div>
+                      <div class="alert alert-warning alert-dismissable" t-if="quotation.state == 'bid'">
+                          <button type="button" class="close hidden-print" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
+                          <strong>This quotation has been submitted.</strong> Contact us if you have any question regarding this quotation.
+                      </div>
 
                       <div class="modal fade" id="modeldecline" role="dialog" aria-hidden="true">
                         <div class="modal-dialog">
