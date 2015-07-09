@@ -6,6 +6,7 @@
     <xpath expr="." position="inside">
       <link rel="stylesheet" type="text/css" href="/bc_website_purchase/static/src/css/website_quotation.css" />
       <script type="text/javascript" src="/bc_website_purchase/static/src/js/website_quotation.js"></script>
+      <script type="text/javascript" src="/bc_website_purchase/static/src/js/jquery.maskMoney.min.js"></script>
     </xpath>
   </template>
 
@@ -66,7 +67,8 @@
                           <div class="js_line_subtotal text-right output-group"
                               t-field="line.price_subtotal"
                               t-att-data="line.id"
-                              t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id"}'/>
+                              t-field-options='{"widget": "monetary", "display_currency": "quotation.pricelist_id.currency_id",
+						"from_currency": "quotation.pricelist_id.currency_id"}'/>
                       </td>
                   </tr>
                   <!-- tr>

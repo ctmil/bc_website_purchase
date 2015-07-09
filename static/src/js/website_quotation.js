@@ -6,6 +6,9 @@ $('#quotation_id').css("visibility","hidden");
 var formChanged = false;
 $('#btnSave').css('background-color','#777');
 $('#btnSubmit').css('background-color','#777');
+$(".update_line.js_unitprice.input-group").each(function(index,element) {
+	$(element).maskMoney();
+})
 
 // $('.tooltip').tooltipster();
 
@@ -14,18 +17,11 @@ $('#btnSubmit').css('background-color','#777');
 website.if_dom_contains('div.o_bc_website_purchase', function () {
 
    $('.update_line.js_unitprice.input-group').on('keydown',function(event){
-	console.log(event.keyCode);
-	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 190 || event.keyCode == 9 || 
-		event.keyCode == 13 || event.keyCode == 188) {
-		formChanged = true;
-		$('#btnSave').css('background-color','#f0ad4e');
-		$('#btnSubmit').css('background-color','#5cb85c');
-		return true;
-		}
-	else {
-		return false;
-		}
-	});
+   	formChanged = true;
+	$('#btnSave').css('background-color','#f0ad4e');
+	$('#btnSubmit').css('background-color','#5cb85c');
+	return true;
+   });
 
    $('.update_line.js_leadtime.input-group').on('keydown',function(event){
 	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13) {
