@@ -48,7 +48,7 @@ class purchase_quote(http.Controller):
             # Log only once a day
             if request.session.get('view_quote',False)!=now:
                 request.session['view_quote'] = now
-                body=_('Quotation viewed by supplier')
+                body=_('Quotation viewed by supplier ')
                 self.__message_post(body, order_id, type='comment')
 
         if token is None and ( request.uid==user.id and user.active==False ):
@@ -68,8 +68,8 @@ class purchase_quote(http.Controller):
 	
         if request.session.get('view_quote',False)!=now:
         	request.session['view_quote'] = now
-        	body=_('Quotation viewed by supplier')
-        	self.__message_post(body, order_id, type='comment')
+       	body=_('Quotation viewed by supplier')
+       	self.__message_post(body, order_id, type='comment')
 
         # If the supplier is viewing this, he has received it. If he has received it it must be sent
         order_obj.signal_workflow(request.cr, SUPERUSER_ID, [order_id], 'send_rfq', context=request.context)
