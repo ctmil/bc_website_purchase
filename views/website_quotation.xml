@@ -6,8 +6,6 @@
     <xpath expr="." position="inside">
       <link rel="stylesheet" type="text/css" href="/bc_website_purchase/static/src/css/website_quotation.css" />
       <script type="text/javascript" src="/bc_website_purchase/static/src/js/website_quotation.js"></script>
-      <!-- script type="text/javascript" src="/bc_website_purchase/static/src/js/jquery.maskMoney.min.js"></script -->
-      <!-- script type="text/javascript" src="/bc_website_purchase/static/src/js/jquery.maskedinput.min.js"></script -->
       <script type="text/javascript" src="/bc_website_purchase/static/src/js/numericInput.min.js"></script>
     </xpath>
   </template>
@@ -251,11 +249,11 @@
 
                       <div class="alert alert-warning alert-dismissable" t-if="quotation.state == 'cancel'">
                           <button type="button" class="close hidden-print" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
-                          <strong>This quotation has been canceled.</strong> Contact us to get a new quote.
+                          <strong>This quotation has been declined.</strong>
                       </div>
                       <div class="alert alert-warning alert-dismissable" t-if="quotation.state == 'bid'">
                           <button type="button" class="close hidden-print" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
-                          <strong>This quotation has been submitted.</strong> Contact us if you have any question regarding this quotation.
+                          <strong>This bid has been submitted.</strong>
                       </div>
 
                       <div class="modal fade" id="modeldecline" role="dialog" aria-hidden="true">
