@@ -7,8 +7,11 @@ var formChanged = false;
 $('#btnSave').css('background-color','#777');
 $('#btnSubmit').css('background-color','#777');
 $(".update_line.js_unitprice.input-group").each(function(index,element) {
-	$(element).maskMoney();
-})
+	$(element).numericInput({
+		allowFloat: true, // Accpets positive numbers (floating point)
+		allowNegative: false // Accpets positive or negative integer
+	});
+});
 
 // $('.tooltip').tooltipster();
 
@@ -16,13 +19,29 @@ $(".update_line.js_unitprice.input-group").each(function(index,element) {
 
 website.if_dom_contains('div.o_bc_website_purchase', function () {
 
-   $('.update_line.js_unitprice.input-group').on('keydown',function(event){
-   	formChanged = true;
-	$('#btnSave').css('background-color','#f0ad4e');
-	$('#btnSubmit').css('background-color','#5cb85c');
-	return true;
-   });
+     
+   //$('.update_line.js_unitprice.input-group').on('keypress',function(event){
+//	if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+//	        event.preventDefault();
+//	} else {
+//	   	formChanged = true;
+//		$('#btnSave').css('background-color','#f0ad4e');
+//		$('#btnSubmit').css('background-color','#5cb85c');
+//		var entered_value = $(this).val();
+//		console.log(entered_value);
+//		var regexPattern = /^\d{0,8}(\.\d{1,2})?$/;         
+		//Allow only Number as well 0nly 2 digit after dot(.)
+//	        if(regexPattern.test(entered_value)) {
+//		   console.log('Valor correcto');
+  //      	   $(this).css('background-color', 'white');
+//		} else {
+//		   console.log('Valor incorrecto');
+//	           $(this).css('background-color', '#d9534f');
+//		   }
+//	}
+//   });
 
+ 
    $('.update_line.js_leadtime.input-group').on('keydown',function(event){
 	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13) {
 		formChanged = true;
@@ -167,10 +186,10 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	var total_order_list = [];
 	var i = 0;
 	$('.js_product_qty').each(function(index,element) {
-		subtotal_qty.push(parseInt($(element).text()));
+		subtotal_qty.push(parseFloat($(element).text()));
 		});
 	$('.update_line.js_unitprice.input-group').each(function(index,element) {
-		subtotal.push(parseInt($(element).val()));
+		subtotal.push(parseFloat($(element).val()));
 		});
 	for ( i = 0; i < subtotal.length; i ++) {
 		total_order = total_order + subtotal[i] * subtotal_qty[i];

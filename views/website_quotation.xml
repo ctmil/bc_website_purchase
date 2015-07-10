@@ -6,7 +6,9 @@
     <xpath expr="." position="inside">
       <link rel="stylesheet" type="text/css" href="/bc_website_purchase/static/src/css/website_quotation.css" />
       <script type="text/javascript" src="/bc_website_purchase/static/src/js/website_quotation.js"></script>
-      <script type="text/javascript" src="/bc_website_purchase/static/src/js/jquery.maskMoney.min.js"></script>
+      <!-- script type="text/javascript" src="/bc_website_purchase/static/src/js/jquery.maskMoney.min.js"></script -->
+      <!-- script type="text/javascript" src="/bc_website_purchase/static/src/js/jquery.maskedinput.min.js"></script -->
+      <script type="text/javascript" src="/bc_website_purchase/static/src/js/numericInput.min.js"></script>
     </xpath>
   </template>
 
@@ -21,8 +23,8 @@
                       <th class="columnID">ID</th>
                       <th>Products</th>
                       <th>Quantity</th>
+                      <th>Scheduled Date</th>
                       <th>Lead time</th>
-                      <th></th>
                       <th class="text-right">Unit Price</th>
                       <th class="text-right">Price</th>
 		      <!-- th></th -->
@@ -45,6 +47,9 @@
                               <span t-field="line.product_uom"/>
                           </div>
                       </td>
+		      <td>
+				<span t-field="line.date_planned" />
+		      </td>
                       <td>
                               <div class="input-group mb32" style="width:100%" t-if="line.product_id.product_tmpl_id.type != 'service'">
                                   <input type="text" name="leadtime" class="update_line js_leadtime input-group" 
@@ -54,7 +59,6 @@
                                  	<span>N/A</span>
                               </div>
                       </td>
-		      <td />
                       <td>
 			      <div class="input-group mb32" style="width: 100%">
                       		<input type="text" name="price_unit" class="update_line js_unitprice input-group"  
@@ -322,12 +326,6 @@
                                       <span t-field="quotation.date_order"/>
                                   </div>
                                   <div class="clearfix"/>
-                                  <div t-if="quotation.minimum_planned_date">
-                                      <label class="col-sm-5 text-right">Expected Date:</label>
-                                      <div class="col-sm-7">
-                                          <span t-field="quotation.minimum_planned_date"/>
-                                      </div> 
-                                  </div>
                               </div>
                           </div>
                       </div>
