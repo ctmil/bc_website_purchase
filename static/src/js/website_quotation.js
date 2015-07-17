@@ -6,25 +6,35 @@ $('#quotation_id').css("visibility","hidden");
 var formChanged = true;
 // $('#btnSave').css('background-color','#777');
 // $('#btnSubmit').css('background-color','red');
+console.log('Previo al control');
+console.log(formChanged);
 $(".update_line.js_unitprice.input-group").each(function(index,element) {
 	$(element).numericInput({
 		allowFloat: true, // Accpets positive numbers (floating point)
 		allowNegative: false // Accpets positive or negative integer
 	});
-        if (isNaN($(element).text())){
+        if (isNaN($(element).val())){
 		formChanged = false;
 		}
+	console.log($(element).val());
+	console.log(formChanged);
 });
 
 $(".update_line.js_leadtime.input-group").each(function(index,element) {
-        var control_var = isNaN($(element).text());
-        if (control_var){
+        var control_var = isNaN($(element).val());
+	console.log(control_var);
+        if (!control_var){
 		formChanged = false;
 		}
+	console.log($(element).val());
+	console.log(formChanged);
 	});
 
+console.log('Post control');
+console.log(formChanged);
+
 if (formChanged == false) {
-	$('#btnSave').css('background-color','#777');
+	$('#btnSave').prop('disabled', true);
 	}
 
 website.if_dom_contains('div.o_bc_website_purchase', function () {
@@ -33,7 +43,8 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
    $('.update_line.js_unitprice.input-group').on('keydown',function(event){
         // event.preventDefault();
    	formChanged = true;
-	$('#btnSave').css('background-color','#f0ad4e');
+	// $('#btnSave').css('background-color','#f0ad4e');
+	$('#btnSave').prop('enabled',true);
 	$('#btnSubmit').css('background-color','#5cb85c');
 	return true;
    });
@@ -42,7 +53,8 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
    $('.update_line.js_leadtime.input-group').on('keydown',function(event){
 	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13) {
 		formChanged = true;
-		$('#btnSave').css('background-color','#f0ad4e');
+		// $('#btnSave').css('background-color','#f0ad4e');
+		$('#btnSave').prop('enabled',true);
 		$('#btnSubmit').css('background-color','#5cb85c');
 		return true;
 		}

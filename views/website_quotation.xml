@@ -247,6 +247,10 @@
                       <!-- div class="alert alert-warning alert-dismissable" id="id-alert-box" >
                       </div -->
 
+                      <div class="alert alert-warning alert-dismissable" t-if="quotation.saved == True">
+                          <button type="button" class="close hidden-print" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
+                          <strong>This quotation has been saved.</strong>
+                      </div>
                       <div class="alert alert-warning alert-dismissable" t-if="quotation.state == 'cancel'">
                           <button type="button" class="close hidden-print" data-dismiss="alert" aria-hidden="true">&amp;times;</button>
                           <strong>This quotation has been declined.</strong>

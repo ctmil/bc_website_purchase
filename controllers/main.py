@@ -193,6 +193,7 @@ class purchase_quote(http.Controller):
 
         	order_line_obj = request.registry.get('purchase.order.line')
 	        order_line_obj.write(request.cr, SUPERUSER_ID, [line_id], vals, context=request.context)
+	order_obj.write(request.cr,SUPERUSER_ID,[order_id],{'saved': True},context=request.context)
         return True
 
     @http.route(["/purchase/template/<model('purchase.quote.template'):quote>"], type='http', auth="user", website=True)

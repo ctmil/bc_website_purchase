@@ -138,6 +138,7 @@ class purchase_order(osv.osv):
         return res
 
     _columns = {
+        'saved': fields.boolean('Saved'),
         'access_token': fields.char('Security Token', required=True, copy=False),
         'template_id': fields.many2one('purchase.quote.template', 'Quote Template', readonly=True,
             states={'draft': [('readonly', False)], 'sent': [('readonly', False)]}),
