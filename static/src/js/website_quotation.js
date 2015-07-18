@@ -1,40 +1,36 @@
 $(function () {
 'use strict';
 var website = openerp.website;
+var color = $('#btnSubmit').css('background-color');
+console.log('Color');
+console.log(color);
 $('.columnID').css("visibility","hidden");
 $('#quotation_id').css("visibility","hidden");
 var formChanged = true;
-// $('#btnSave').css('background-color','#777');
-// $('#btnSubmit').css('background-color','red');
-console.log('Previo al control');
-console.log(formChanged);
 $(".update_line.js_unitprice.input-group").each(function(index,element) {
 	$(element).numericInput({
 		allowFloat: true, // Accpets positive numbers (floating point)
 		allowNegative: false // Accpets positive or negative integer
 	});
-        if (isNaN($(element).val())){
+        if ( !($(element).val())){
 		formChanged = false;
 		}
-	console.log($(element).val());
-	console.log(formChanged);
 });
 
 $(".update_line.js_leadtime.input-group").each(function(index,element) {
         var control_var = isNaN($(element).val());
 	console.log(control_var);
-        if (!control_var){
+        if ( !$(element).val() ){
 		formChanged = false;
 		}
-	console.log($(element).val());
-	console.log(formChanged);
 	});
-
-console.log('Post control');
+console.log('Control');
 console.log(formChanged);
-
 if (formChanged == false) {
+	$('#btnSave').addClass('disabled');
 	$('#btnSave').prop('disabled', true);
+	$('#btnSubmit').addClass('disabled');
+	$('#btnSubmit').prop('disabled', true);
 	}
 
 website.if_dom_contains('div.o_bc_website_purchase', function () {
@@ -44,8 +40,10 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
         // event.preventDefault();
    	formChanged = true;
 	// $('#btnSave').css('background-color','#f0ad4e');
+	$('#btnSave').removeClass('disabled');
+	$('#btnSubmit').removeClass('disabled');
 	$('#btnSave').prop('enabled',true);
-	$('#btnSubmit').css('background-color','#5cb85c');
+	$('#btnSubmit').prop('enabled',true);
 	return true;
    });
 
@@ -54,8 +52,10 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	if (event.keyCode >= 48 && event.keyCode <= 57 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 13) {
 		formChanged = true;
 		// $('#btnSave').css('background-color','#f0ad4e');
+		$('#btnSave').removeClass('disabled');
+		$('#btnSubmit').removeClass('disabled');
 		$('#btnSave').prop('enabled',true);
-		$('#btnSubmit').css('background-color','#5cb85c');
+		$('#btnSubmit').prop('enabled',true);
 		return true;
 		}
 	else {
@@ -189,6 +189,7 @@ website.if_dom_contains('div.o_bc_website_purchase', function () {
 	});
 
    $('#btnCalc').on('click', function (ev) {
+	console.log('Click function');
 	var subtotal = [];
 	var subtotal_qty = [];
 	var total_order = 0;

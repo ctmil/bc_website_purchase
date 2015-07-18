@@ -4,7 +4,7 @@
 
   <template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Quote frontend assets">
     <xpath expr="." position="inside">
-      <link rel="stylesheet" type="text/css" href="/bc_website_purchase/static/src/css/website_quotation.css" />
+      <!-- link rel="stylesheet" type="text/css" href="/bc_website_purchase/static/src/css/website_quotation.css" / -->
       <script type="text/javascript" src="/bc_website_purchase/static/src/js/website_quotation.js"></script>
       <script type="text/javascript" src="/bc_website_purchase/static/src/js/numericInput.min.js"></script>
     </xpath>
@@ -283,35 +283,6 @@
                       </div>
 
                       <div class="row mt32">
-                          <div class="col-md-6">
-				<div class="row">
-					<div id="message1" class="jumbotron flyover flyover-centered">
-					   <h1>Hey!</h1>
-					   <p>
-						This is the text to show in the message.
-					   </p>
-					   <button class="btn btn-primary">Dismiss</button>
-					</div>
-				</div>
-                              <!-- div class="row">
-                                  <label class="col-sm-4 text-right">Supplier:</label>
-                                  <div class="col-sm-8">
-                                      <div t-field="quotation.partner_id" t-field-options='{
-                                          "widget": "contact",
-                                          "fields": ["address", "name", "phone", "email"]
-                                          }'/>
-                                  </div>
-                              </div -->
-                              <!-- div t-if="quotation.partner_shipping_id.id != quotation.partner_invoice_id.id" class="row">
-                                  <label class="col-sm-4 text-right">Ship To:</label>
-                                  <div class="col-sm-8">
-                                      <div t-field="quotation.partner_shipping_id" t-field-options='{
-                                        "widget": "contact",
-                                        "fields": ["address", "name", "phone"]
-                                        }'/>
-                                  </div>
-                              </div -->
-                          </div>
                           <div class="col-md-6">
                               <!-- div class="row">
                                   <label class="col-sm-5 text-right tooltip" >Your Contact:</label>
