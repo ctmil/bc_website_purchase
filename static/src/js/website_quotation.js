@@ -1,8 +1,28 @@
 $(function () {
 'use strict';
 var website = openerp.website;
+
 $('.columnID').css("visibility","hidden");
 $('#quotation_id').css("visibility","hidden");
+
+website.ready().done( function() {
+    $('.bc_attachment_url').each( function( index, element ) {
+        var attachment_id = $(element).attr("attachment_id");
+        var message_id =  $(element).attr("message_id");
+        console.log("attachment_id:",attachment_id);
+        console.log("message_id:",message_id);
+        console.log("openerp:",website);
+        var url = openerp.website.session.url('/mail/download_attachment', {
+                'model': 'mail.message',
+                'id': message_id,
+                'method': 'download_attachment',
+                'attachment_id': attachment_id
+            });
+    //        var url = "empty";
+        console.log("url:",url);
+        $(element).attr("href", url);
+    });
+} );
 
 website.if_dom_contains('div.o_bc_website_purchase', function () {
 

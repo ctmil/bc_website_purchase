@@ -16,9 +16,17 @@ GURBA
         'data/website_quotation_data.xml',
         'security/ir.model.access.csv',
     ],
+    'js': ['static/js/bc_website_purchase.js'],
     'demo': [
         # 'data/website_quotation_demo.xml'
     ],
-    'qweb': ['static/src/xml/*.xml'],
+    'qweb': [
+        'static/xml/*.xml',
+        'static/src/xml/*.xml',
+     ],
+    'test': [
+        'statis/test/demo.js',    
+    ],
     'installable': True,
+    'application': True,
 }
